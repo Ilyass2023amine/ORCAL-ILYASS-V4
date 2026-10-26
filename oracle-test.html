@@ -3,6 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="The Oracle ∞ – 8 games of logic, memory, speed and reflection. Works offline in your browser.">
+<meta name="theme-color" content="#0a0620">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%94%AE%3C/text%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>The Oracle ∞</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Cinzel:wght@500;700&family=Spectral:ital,wght@0,300;0,500;1,300&display=swap">
 <style>
@@ -121,6 +125,13 @@ body.rm *{animation:none!important;transition:none!important}
 [lang=ar] body,[lang=ar] button,[lang=ar] input,[lang=ar] h2,[lang=ar] h3,[lang=ar] .cta,[lang=ar] .gm b,[lang=ar] .react{font-family:"Cairo","Segoe UI",Tahoma,sans-serif;letter-spacing:0}
 [lang=ar] body{line-height:1.75}
 @media(max-width:520px){.gm{grid-template-columns:1fr}.gm button{min-height:0}}
+html{color-scheme:dark}button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}.react{touch-action:none;user-select:none;-webkit-user-select:none}
+#toasts{position:fixed;bottom:16px;inset-inline:0;z-index:12;display:grid;justify-items:center;gap:.5rem;pointer-events:none}
+.toast{background:#150c38;border:1px solid var(--edge);border-radius:999px;padding:.5rem 1.1rem;font-size:.92rem;box-shadow:0 0 24px rgba(120,60,255,.4);animation:tin .3s both}@keyframes tin{from{opacity:0;transform:translateY(10px)}}
+#coreW{width:84px;margin:.4rem auto 1.4rem;transition:transform .2s}
+.core{width:84px;height:84px;border-radius:50%;position:relative;background:radial-gradient(circle at 35% 30%,#fff,var(--aurora) 16%,var(--arcane) 55%,#1b0b4d);box-shadow:0 0 36px var(--arcane),0 0 80px rgba(93,242,214,.3);animation:cp 4s ease-in-out infinite}
+.core::before,.core::after{content:"";position:absolute;inset:-12px;border-radius:50%;border:1px solid var(--aurora);border-left-color:transparent;border-right-color:transparent;animation:sp 6s linear infinite}
+.core::after{inset:-22px;border-color:var(--ember) transparent;animation-duration:10s;animation-direction:reverse}@keyframes cp{50%{transform:scale(1.06);filter:brightness(1.2)}}
 </style>
 </head>
 <body data-gfx="high">
@@ -134,6 +145,7 @@ body.rm *{animation:none!important;transition:none!important}
     <div class="ring" style="width:460px;height:460px;left:-230px;top:-230px;border-color:var(--ember);box-shadow:0 0 30px var(--ember),inset 0 0 30px var(--ember);animation:r1 22s linear infinite reverse"></div>
   </div>
 </div></div>
+<div id="toasts" aria-live="polite"></div>
 <div id="flash"></div>
 <button class="gear" id="gb" data-ia="set_h" aria-label="Settings">⚙️</button>
 <div id="set" role="dialog" aria-modal="true" aria-label="Settings"><div class="panel">
@@ -151,6 +163,7 @@ body.rm *{animation:none!important;transition:none!important}
 </div></div>
 <main>
   <div class="langbar" role="group" aria-label="Language"><button data-l="ar">العربية</button><button data-l="en">English</button><button data-l="fr">Français</button></div>
+  <div id="coreW" aria-hidden="true"><div class="core"></div></div>
   <h1>The Oracle ∞</h1>
   <p class="sub" data-i="sub"></p>
   <div id="tilt"><div id="app" tabindex="-1"><div class="load" role="status"><span class="spin"></span><span data-i="loading">Summoning the Oracle…</span></div></div></div>
@@ -171,7 +184,7 @@ chip1:"🎮 8 games",chip2:"🌍 3 languages",chip3:"💡 hints",chip4:"💾 sav
 enter:"Enter the Oracle",how:"How to play",menu_h:"Choose a game",
 menu_note:"Puzzle results and the personality reflection are separate: one measures puzzle performance, the other is for self-reflection.",
 progress:"My progress",back:"Back",gotit:"Got it",exit:"✕ Exit",exit2:"Tap again to exit",again:"Play again",tomenu:"Back to the menu",start:"Start",moves:"Moves",easy:"Easy",hard:"Hard",newbest:"🏆 New personal best!",
-g_logic:"Shape Logic",g_logic_d:"80 puzzles, 4 levels, hints and streaks",
+g_logic:"Shape Logic",g_logic_d:"160 puzzles, 4 levels, hints and streaks",
 g_mb:"Personality Reflection",g_mb_d:"24 statements and a radar report",
 g_mem:"Memory Match",g_mem_d:"Find all the hidden pairs",
 g_echo:"Pattern Echo",g_echo_d:"Repeat the growing light-and-sound pattern",
@@ -234,7 +247,7 @@ D:{INTJ:"Strategic, independent, analytical and future-focused.",INTP:"Curious, 
 card:"Card {0}",mem_done:"All pairs found in {0} moves!",echo_round:"Round {0}",echo_watch:"Watch the pattern…",echo_you:"Your turn!",echo_over:"Game over. You completed {0} rounds.",
 shuffle:"Shuffle",slide_win:"Solved in {0} moves!",math_intro:"Solve as many as you can in {0} seconds. A wrong answer costs 3 seconds.",math_ok:"Correct: {0}",math_done:"Time’s up! {0} correct.",
 lights_goal:"Turn off every light. Each tap flips the tapped light and its neighbours.",lights_win:"All dark! Solved in {0} moves.",lights_new:"New puzzle",
-react_intro:"Tap the box as soon as it turns green. Five rounds.",react_tap:"Tap to start",react_wait:"Wait for green…",react_go:"Tap now!",react_early:"Too early! Tap to try again.",react_ms:"{0} ms. Tap for the next round.",react_round:"Round {0} of 5",react_done:"Average of 5: {0} ms"
+react_intro:"Tap the box as soon as it turns green. Five rounds.",react_tap:"Tap to start",react_wait:"Wait for green…",react_go:"Tap now!",react_early:"Too early! Tap to try again.",react_ms:"{0} ms. Tap for the next round.",react_round:"Round {0} of 5",react_done:"Average of 5: {0} ms",share:"Share result",copied:"Copied ✓",share_txt:"{0} · The Oracle ∞ — can you beat it?",lvl:"Level",daily:"Daily challenge",t_daily:"Daily challenge complete! +{0} XP",t_lvl:"Level up! You are level {0}",ach_first:"First play",ach_ten:"10 games played",ach_all:"Tried all 8 games",ach_perfect:"Perfect logic run",ach_fast:"Lightning reflexes",ach_lv5:"Reach level 5",prof_h:"Profile",prof_xp:"Total XP",prof_plays:"Games played",prof_streak:"Daily streak",prof_note:"Local records stored on this device only. There is no online ranking."
 });
 
 I18N.add("ar",{
@@ -244,7 +257,7 @@ chip1:"🎮 8 ألعاب",chip2:"🌍 3 لغات",chip3:"💡 تلميحات",ch
 enter:"ادخل إلى العرّاف",how:"طريقة اللعب",menu_h:"اختر لعبة",
 menu_note:"نتائج الألغاز منفصلة عن تأمل الشخصية: الأولى تقيس أداءك في الألغاز، والثانية للتأمل الذاتي فقط.",
 progress:"تقدّمي",back:"رجوع",gotit:"فهمت",exit:"✕ خروج",exit2:"اضغط مرة أخرى للخروج",again:"العب مجدداً",tomenu:"العودة إلى القائمة",start:"ابدأ",moves:"الحركات",easy:"سهل",hard:"صعب",newbest:"🏆 رقم قياسي شخصي جديد!",
-g_logic:"منطق الأشكال",g_logic_d:"80 لغزاً و4 مستويات وتلميحات",
+g_logic:"منطق الأشكال",g_logic_d:"160 لغزاً و4 مستويات وتلميحات",
 g_mb:"تأمل الشخصية",g_mb_d:"24 عبارة وتقرير برسم رادار",
 g_mem:"تطابق الذاكرة",g_mem_d:"اعثر على كل الأزواج المخفية",
 g_echo:"صدى النمط",g_echo_d:"كرّر نمط الأضواء والأصوات المتزايد",
@@ -307,7 +320,7 @@ D:{INTJ:"استراتيجي مستقل تحليلي ويركّز على المس
 card:"البطاقة {0}",mem_done:"وجدت كل الأزواج في {0} حركة!",echo_round:"الجولة {0}",echo_watch:"راقب النمط…",echo_you:"دورك!",echo_over:"انتهت اللعبة. أكملت {0} جولات.",
 shuffle:"إعادة الخلط",slide_win:"تم الحل في {0} حركة!",math_intro:"حلّ أكبر عدد ممكن خلال {0} ثانية. الإجابة الخاطئة تكلّفك 3 ثوانٍ.",math_ok:"الصحيحة: {0}",math_done:"انتهى الوقت! {0} إجابة صحيحة.",
 lights_goal:"أطفئ كل الأضواء. تبدّل كل نقرة الضوء المضغوط وجيرانه.",lights_win:"أظلم كل شيء! تم الحل في {0} حركة.",lights_new:"لغز جديد",
-react_intro:"اضغط على المربع فور أن يتحول إلى الأخضر. خمس جولات.",react_tap:"اضغط للبدء",react_wait:"انتظر اللون الأخضر…",react_go:"اضغط الآن!",react_early:"مبكر جداً! اضغط للمحاولة مجدداً.",react_ms:"{0} م.ث. اضغط للجولة التالية.",react_round:"الجولة {0} من 5",react_done:"متوسط 5 جولات: {0} م.ث"
+react_intro:"اضغط على المربع فور أن يتحول إلى الأخضر. خمس جولات.",react_tap:"اضغط للبدء",react_wait:"انتظر اللون الأخضر…",react_go:"اضغط الآن!",react_early:"مبكر جداً! اضغط للمحاولة مجدداً.",react_ms:"{0} م.ث. اضغط للجولة التالية.",react_round:"الجولة {0} من 5",react_done:"متوسط 5 جولات: {0} م.ث",share:"شارك النتيجة",copied:"تم النسخ ✓",share_txt:"{0} · العرّاف ∞ — هل تستطيع التفوق عليّ؟",lvl:"المستوى",daily:"تحدي اليوم",t_daily:"أنجزت تحدي اليوم! +{0} نقطة خبرة",t_lvl:"ارتقيت! أنت الآن في المستوى {0}",ach_first:"أول لعبة",ach_ten:"10 ألعاب",ach_all:"جرّبت كل الألعاب الثماني",ach_perfect:"جولة منطق كاملة",ach_fast:"ردود فعل البرق",ach_lv5:"بلوغ المستوى 5",prof_h:"الملف الشخصي",prof_xp:"مجموع الخبرة",prof_plays:"الألعاب الملعوبة",prof_streak:"سلسلة الأيام",prof_note:"سجلات محلية على هذا الجهاز فقط. لا يوجد ترتيب عبر الإنترنت."
 });
 
 I18N.add("fr",{
@@ -317,7 +330,7 @@ chip1:"🎮 8 jeux",chip2:"🌍 3 langues",chip3:"💡 indices",chip4:"💾 enre
 enter:"Entrer dans l’Oracle",how:"Comment jouer",menu_h:"Choisissez un jeu",
 menu_note:"Les résultats des énigmes et la réflexion sur la personnalité sont distincts : l’un mesure la performance aux énigmes, l’autre sert à la réflexion personnelle.",
 progress:"Ma progression",back:"Retour",gotit:"Compris",exit:"✕ Quitter",exit2:"Touchez encore pour quitter",again:"Rejouer",tomenu:"Retour au menu",start:"Commencer",moves:"Coups",easy:"Facile",hard:"Difficile",newbest:"🏆 Nouveau record personnel !",
-g_logic:"Logique des formes",g_logic_d:"80 énigmes, 4 niveaux, indices et séries",
+g_logic:"Logique des formes",g_logic_d:"160 énigmes, 4 niveaux, indices et séries",
 g_mb:"Réflexion sur la personnalité",g_mb_d:"24 affirmations et un rapport en radar",
 g_mem:"Paires mémoire",g_mem_d:"Retrouvez toutes les paires cachées",
 g_echo:"Écho de motifs",g_echo_d:"Répétez la séquence de lumières et de sons",
@@ -380,7 +393,7 @@ D:{INTJ:"Stratégique, indépendant, analytique et tourné vers l’avenir.",INT
 card:"Carte {0}",mem_done:"Toutes les paires trouvées en {0} coups !",echo_round:"Manche {0}",echo_watch:"Observez la séquence…",echo_you:"À vous !",echo_over:"Partie terminée. Vous avez terminé {0} manches.",
 shuffle:"Mélanger",slide_win:"Résolu en {0} coups !",math_intro:"Résolvez-en un maximum en {0} secondes. Une mauvaise réponse coûte 3 secondes.",math_ok:"Correctes : {0}",math_done:"Temps écoulé ! {0} correctes.",
 lights_goal:"Éteignez toutes les lumières. Chaque pression inverse la lumière touchée et ses voisines.",lights_win:"Tout est éteint ! Résolu en {0} coups.",lights_new:"Nouvelle grille",
-react_intro:"Touchez le carré dès qu’il devient vert. Cinq manches.",react_tap:"Touchez pour commencer",react_wait:"Attendez le vert…",react_go:"Touchez maintenant !",react_early:"Trop tôt ! Touchez pour réessayer.",react_ms:"{0} ms. Touchez pour la manche suivante.",react_round:"Manche {0} sur 5",react_done:"Moyenne sur 5 : {0} ms"
+react_intro:"Touchez le carré dès qu’il devient vert. Cinq manches.",react_tap:"Touchez pour commencer",react_wait:"Attendez le vert…",react_go:"Touchez maintenant !",react_early:"Trop tôt ! Touchez pour réessayer.",react_ms:"{0} ms. Touchez pour la manche suivante.",react_round:"Manche {0} sur 5",react_done:"Moyenne sur 5 : {0} ms",share:"Partager",copied:"Copié ✓",share_txt:"{0} · The Oracle ∞ — saurez-vous faire mieux ?",lvl:"Niveau",daily:"Défi du jour",t_daily:"Défi du jour accompli ! +{0} XP",t_lvl:"Niveau supérieur ! Vous êtes niveau {0}",ach_first:"Première partie",ach_ten:"10 parties jouées",ach_all:"Les 8 jeux essayés",ach_perfect:"Logique parfaite",ach_fast:"Réflexes éclair",ach_lv5:"Atteindre le niveau 5",prof_h:"Profil",prof_xp:"XP total",prof_plays:"Parties jouées",prof_streak:"Série quotidienne",prof_note:"Records enregistrés uniquement sur cet appareil. Aucun classement en ligne."
 });
 
 
@@ -452,8 +465,8 @@ function buildBanks(seed=2026){
       return cellsToP(cells,cands,["m_rot",sc,sr],["hm_rot"])}];
   const fill=(n,gen)=>{const out=[],seen=new Set();let g=0;while(out.length<n&&g++<800){const p=gen();if(!p)continue;const k=K([p.seq,p.ans]);if(seen.has(k))continue;seen.add(k);out.push(p)}return out};
   const mix=(nr,NF)=>()=>r()<.7?shape(nr):pick(NF)();
-  return[fill(20,mix(1,NB)),fill(20,mix(2,NA)),fill(20,mix(3,NE)),
-    fill(20,()=>{const u=r();return u<.45?pick(MX)():u<.75?shape(4):pick(NM)()})];
+  return[fill(40,mix(1,NB)),fill(40,mix(2,NA)),fill(40,mix(3,NE)),
+    fill(40,()=>{const u=r();return u<.45?pick(MX)():u<.75?shape(4):pick(NM)()})];
 }
 return{buildBanks};
 })();
@@ -465,7 +478,7 @@ const t=I18N.t;
 const $=s=>document.querySelector(s);
 const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const obj=v=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
-const set=Object.assign({gfx:"high",sound:true,vol:.5,rm:matchMedia("(prefers-reduced-motion:reduce)").matches},obj(store.get("oracle-set",{})));
+const set=Object.assign({gfx:((navigator.hardwareConcurrency||8)<=4||(navigator.deviceMemory||8)<=4||matchMedia("(pointer:coarse)").matches)?"med":"high",sound:true,vol:.5,rm:matchMedia("(prefers-reduced-motion:reduce)").matches},obj(store.get("oracle-set",{})));
 if(!["low","med","high"].includes(set.gfx))set.gfx="high";
 set.vol=Math.min(1,Math.max(0,+set.vol||0));set.sound=set.sound!==false;set.rm=!!set.rm;
 let AC;
@@ -496,12 +509,15 @@ const proj=(s,z)=>{const k=W*.1;return[W/2+s.x/z*k-sm.x*14*(1-z)-cur.ry*(1-z)*.6
 function burst(el,col){if(set.rm)return;const r=el.getBoundingClientRect(),n={low:12,med:26,high:44}[set.gfx];
   for(let i=0;i<n;i++){const a=Math.random()*6.28,v=2+Math.random()*5;pt.push({x:r.left+r.width/2,y:r.top+r.height/2,vx:Math.cos(a)*v,vy:Math.sin(a)*v-2,l:1,c:col})}}
 const objs=[...document.querySelectorAll(".o[data-b]")].map(e=>({e,b:e.dataset.b.split(",").map(Number),d:+e.dataset.d}));
-function tick(t){
+let hid=false;
+addEventListener("visibilitychange",()=>{if(!document.hidden&&hid){hid=false;requestAnimationFrame(tick)}});
+function tick(t){if(document.hidden){hid=true;return}
   const mx=set.rm?0:mouse.x,my=set.rm?0:mouse.y;
   sm.x+=(mx-sm.x)*.07;sm.y+=(my-sm.y)*.07;
   for(const k in cam)cur[k]+=((set.rm?0:cam[k])-cur[k])*.05;
   $("#world").style.transform=`translateZ(${cur.z}px) rotateX(${cur.rx-sm.y*6+Math.sin(t/3000)*2}deg) rotateY(${cur.ry+sm.x*8}deg)`;
   for(const{e,b,d}of objs)e.style.transform=`translate3d(${b[0]+sm.x*d*60}px,${b[1]+sm.y*d*40}px,${b[2]}px) rotateX(${sm.y*d*20}deg) rotateY(${sm.x*d*20}deg)`;
+  if(coreW)coreW.style.transform=`translate(${sm.x*8}px,${sm.y*6}px)`;
   $("#tilt").style.transform=`rotateY(${sm.x*3}deg) rotateX(${-sm.y*3}deg)`;
   c.clearRect(0,0,W,H);
   if(neb.length){c.globalCompositeOperation="lighter";
@@ -526,7 +542,7 @@ const openSet=()=>{lastFocus=document.activeElement;$("#set").classList.add("ope
 const closeSet=()=>{$("#set").classList.remove("open");if(lastFocus&&lastFocus.focus)lastFocus.focus()};
 $("#gb").onclick=()=>{sfx.click();openSet()};
 $("#sc").onclick=()=>{sfx.click();closeSet()};
-const PROGRESS_KEYS=["oracle-best","oracle-stats","oracle-mb","oracle-lv","oracle-timed","oracle-seen","oracle-g"];
+const PROGRESS_KEYS=["oracle-best","oracle-stats","oracle-mb","oracle-lv","oracle-timed","oracle-seen","oracle-g","oracle-prof"];
 (()=>{const b=$("#clr");let armed=false,tmo;
   b.onclick=()=>{if(!armed){armed=true;b.textContent=t("set_clr2");tmo=setTimeout(()=>{armed=false;b.textContent=t("set_clr")},3000);return}
     clearTimeout(tmo);armed=false;PROGRESS_KEYS.forEach(k=>{try{localStorage.removeItem(k)}catch{}});b.textContent=t("set_clrd");sfx.ok();setTimeout(()=>{b.textContent=t("set_clr")},1800)}})();
@@ -597,10 +613,10 @@ const GB={all:()=>obj(store.get("oracle-g",{})),
   submit(key,v,min){const g=GB.all(),o=g[key],had=typeof o==="number",better=!had||(min?v<o:v>o);if(better){g[key]=v;store.set("oracle-g",g)}return better&&had}};
 const BEST=[["mem-easy","g_mem","easy","u_moves"],["mem-hard","g_mem","hard","u_moves"],["echo","g_echo",0,"u_rounds"],["slide-3","g_slide","3×3","u_moves"],["slide-4","g_slide","4×4","u_moves"],["math","g_math",0,"u_ok"],["lights","g_lights",0,"u_moves"],["react","g_react",0,"u_ms"]];
 function finish(key,v,min,unitK,msg,again){ /* result card shown below the finished board */
-  const nb=GB.submit(key,v,min);sfx.done();
+  const nb=GB.submit(key,v,min);sfx.done();award(key.split("-")[0],20+(nb?15:0),{fast:key==="react"&&v<250});
   const d=document.createElement("div");d.className="fb";
-  d.innerHTML=`<div class="big ltr" style="font-size:2.2rem">${esc(t(unitK,v))}</div><p>${msg}</p>${nb?`<p class="ok-t">${t("newbest")}</p>`:""}<button class="cta" id="ag">${t("again")}</button><button class="ghost" id="tmn" style="display:block;margin:.8rem auto 0">${t("tomenu")}</button>`;
-  app.appendChild(d);$("#ag").onclick=again;$("#tmn").onclick=menu;$("#ag").focus();burst($("#ag"),"#ffc86b");if(d.scrollIntoView)d.scrollIntoView({block:"nearest"})}
+  d.innerHTML=`<div class="big ltr" style="font-size:2.2rem">${esc(t(unitK,v))}</div><p>${msg}</p>${nb?`<p class="ok-t">${t("newbest")}</p>`:""}<button class="cta" id="ag">${t("again")}</button><button class="ghost" id="shr" style="display:block;margin:.8rem auto 0">${t("share")}</button><button class="ghost" id="tmn" style="display:block;margin:.8rem auto 0">${t("tomenu")}</button>`;
+  app.appendChild(d);$("#ag").onclick=again;$("#shr").onclick=async()=>{const x=t("share_txt",t(unitK,v));try{if(navigator.share)await navigator.share({text:x});else{await navigator.clipboard.writeText(x);$("#shr").textContent=t("copied")}}catch{}};$("#tmn").onclick=menu;$("#ag").focus();burst($("#ag"),"#ffc86b");if(d.scrollIntoView)d.scrollIntoView({block:"nearest"})}
 function picker(id,opts,start){ /* difficulty / size chooser */
   RR=()=>picker(id,opts,start);go("menu");
   show(`<h2>${t("g_"+id)}</h2><p class="fb" style="text-align:center">${t("g_"+id+"_d")}</p><div class="menu">${opts.map((o,i)=>`<button data-o="${i}"><span>${o[0]}<small>${o[1]}</small></span></button>`).join("")}</div><button class="ghost" id="bk">${t("back")}</button>`);
@@ -627,7 +643,28 @@ function progress(){RR=progress;go("res",true);
     <div class="stats"><span>${t("pr_runs")} <b>${st.runs||0}</b></span><span>${t("pr_acc")} <b>${st.asked?Math.round(st.solved/st.asked*100):0}%</b></span><span>${t("pr_streak")} <b>${st.bestStreak||0}</b></span></div>
     <h3>${t("pr_games")}</h3>${BEST.map(r=>`<div class="meta"><span>${t(r[1])}${r[2]?" · "+t(r[2]):""}</span><b>${typeof g[r[0]]==="number"?esc(t(r[3],g[r[0]])):t("pr_none")}</b></div>`).join("")}
     <p class="fb">${mb.type?t("pr_mb",esc(mb.type),esc(mb.date||"")):t("pr_nomb")}</p><p class="note">${t("pr_note")}</p>`;
-  show(`<h2>${t("progress")}</h2>${body}<button class="cta" id="bk">${t("back")}</button>`);$("#bk").onclick=menu}
+  show(`<h2>${t("progress")}</h2>${profPanel()}${body}<button class="cta" id="bk">${t("back")}</button>`);$("#bk").onclick=menu}
+
+/* ===================== progression: XP, levels, daily, achievements (local only) ===================== */
+const coreW=$("#coreW"),AK=["first","ten","all","perfect","fast","lv5"];
+const PR={get(){const p=obj(store.get("oracle-prof",{}));return{xp:Math.max(0,+p.xp||0),plays:Math.max(0,+p.plays||0),ach:Array.isArray(p.ach)?p.ach.filter(k=>AK.includes(k)):[],g:Array.isArray(p.g)?p.g:[],day:typeof p.day==="string"?p.day:"",dstreak:Math.max(0,+p.dstreak||0)}},put:p=>store.set("oracle-prof",p)};
+const lvlOf=xp=>{let l=1,n=100;while(xp>=n){xp-=n;l++;n=100+l*25}return{l,cur:xp,need:n}};
+const dayStr=(o=0)=>new Date(Date.now()-o*864e5).toLocaleDateString("en-CA");
+const dailyId=()=>GAMES[Math.floor(Date.parse(dayStr())/864e5)%GAMES.length][0];
+function toast(m){const h=$("#toasts"),d=document.createElement("div");d.className="toast";d.textContent=m;h.appendChild(d);setTimeout(()=>d.remove(),3200);while(h.children.length>3)h.firstChild.remove()}
+let awardedRun=-1;
+function award(gid,xp,fl={}){ /* once per finished game screen: guarded by the run counter */
+  if(awardedRun===run)return;awardedRun=run;
+  const p=PR.get(),before=lvlOf(p.xp).l;let bonus=0;
+  if(gid===dailyId()&&p.day!==dayStr()){p.dstreak=p.day===dayStr(1)?p.dstreak+1:1;p.day=dayStr();bonus=50;toast(t("t_daily",50))}
+  p.xp+=xp+bonus;p.plays++;if(!p.g.includes(gid))p.g.push(gid);
+  const A={first:()=>1,ten:()=>p.plays>=10,all:()=>p.g.length>=8,perfect:()=>!!fl.perfect,fast:()=>!!fl.fast,lv5:()=>lvlOf(p.xp).l>=5},got=[];
+  AK.forEach(k=>{if(!p.ach.includes(k)&&A[k]()){p.ach.push(k);got.push(k)}});
+  PR.put(p);toast("+"+(xp+bonus)+" XP");const L=lvlOf(p.xp).l;if(L>before)toast(t("t_lvl",L));got.forEach(k=>toast("🏆 "+t("ach_"+k)))}
+function profBar(){const p=PR.get(),L=lvlOf(p.xp),done=p.day===dayStr();
+  return `<div class="meta"><span>🔮 ${t("lvl")} <b>${L.l}</b></span><span>${L.cur}/${L.need} XP</span></div><div class="bar"><i style="width:${L.cur/L.need*100}%"></i></div><p class="note" style="margin:0 0 .4rem">⭐ ${t("daily")}: ${esc(t("g_"+dailyId()))}${done?" ✓":" (+50 XP)"}</p>`}
+function profPanel(){const p=PR.get(),L=lvlOf(p.xp);
+  return `<h3>${t("prof_h")}</h3><div class="stats"><span>${t("lvl")} <b>${L.l}</b></span><span>${t("prof_xp")} <b>${p.xp}</b></span><span>${t("prof_plays")} <b>${p.plays}</b></span><span>${t("prof_streak")} <b>${p.dstreak}</b></span></div><div class="chips">${AK.map(k=>`<span>${p.ach.includes(k)?"🏆":"🔒"} ${t("ach_"+k)}</span>`).join("")}</div><p class="note">${t("prof_note")}</p>`}
 
 /* ===================== hub menu ===================== */
 const GAMES=[["logic","🔷"],["mb","🧬"],["mem","🃏"],["echo","🎵"],["slide","🧩"],["math","➕"],["lights","💡"],["react","⚡"]];
@@ -643,7 +680,7 @@ function bestLine(id){let v="";
   else{const g=GB.all();v=BEST.filter(r=>r[1]==="g_"+id&&typeof g[r[0]]==="number").map(r=>t(r[3],g[r[0]])).join(" · ")}
   return v?`<em>🏆 ${esc(v)}</em>`:""}
 function menu(){RR=menu;go("menu");
-  show(`<h2>${t("menu_h")}</h2><div class="gm">${GAMES.map(([id,ic])=>`<button data-g="${id}"><span class="ic">${ic}</span><b>${t("g_"+id)}</b><small>${t("g_"+id+"_d")}</small>${bestLine(id)}</button>`).join("")}</div>
+  show(`<h2>${t("menu_h")}</h2>${profBar()}<div class="gm">${GAMES.map(([id,ic])=>`<button data-g="${id}"><span class="ic">${ic}</span><b>${t("g_"+id)}${id===dailyId()?" ⭐":""}</b><small>${t("g_"+id+"_d")}</small>${bestLine(id)}</button>`).join("")}</div>
    <div class="row2"><button id="hw">📖 ${t("how")}</button><button id="pg">📊 ${t("progress")}</button></div><p class="note">${t("menu_note")}</p>`);
   app.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{sfx.click();START[b.dataset.g]()});
   $("#hw").onclick=()=>{sfx.click();howTo(menu)};$("#pg").onclick=()=>{sfx.click();progress()}}
@@ -692,6 +729,7 @@ function iqRun(lv,timed,done){
   function result(){
     const pct=Math.round(ok/qs.length*100),b=obj(store.get("oracle-best",{}));if(!(b[lv]>=pct)){b[lv]=pct;store.set("oracle-best",b)}
     const stt=obj(store.get("oracle-stats",{}));stt.runs=(stt.runs||0)+1;stt.solved=(stt.solved||0)+ok;stt.asked=(stt.asked||0)+qs.length;stt.bestStreak=Math.max(stt.bestStreak||0,bestS);store.set("oracle-stats",stt);
+    award("logic",10+Math.round(ok*4*L.m),{perfect:ok===qs.length});
     const msg=pct>=85?t(lv<3?"lg_m1":"lg_m2"):pct>=60?t("lg_m3"):t("lg_m4");
     go("res");sfx.done();
     show(`${prog(1,1)}<h2>${t("lg_res",t("lv"+lv))}</h2><div class="big">${ok}/${qs.length}</div>
@@ -751,7 +789,7 @@ function mbRun(done){
       <h3>${t("rp_str")}</h3><ul>${Ls.map(l=>`<li>${l[2]}</li>`).join("")}</ul>
       <h3>${t("rp_bl")}</h3><ul>${Ls.map(l=>`<li>${l[3]}</li>`).join("")}</ul>
       <h3>${t("rp_gr")}</h3><ul>${Ls.map(l=>`<li>${l[4]}</li>`).join("")}</ul></div>`;
-    store.set("oracle-mb",{type,date:new Date().toISOString().slice(0,10)});
+    award("mb",20);store.set("oracle-mb",{type,date:new Date().toISOString().slice(0,10)});
     go("res");sfx.done();
     show(`${prog(1,1)}<h2>${t("rp_h")}</h2><div class="big">${type}</div><p class="fb" style="text-align:center">${DESC[type]}</p>
      ${radar}<h3>${t("rp_dims")}</h3>${axes}${rep}
@@ -786,7 +824,7 @@ function echoPlay(){
   const flash=i=>{pads[i].classList.add("lit");tone(fr[i],.3,"sine",1.2);setTimeout(()=>pads[i].classList.remove("lit"),320)};
   const round=async()=>{
     accept=false;seq.push(Math.floor(Math.random()*4));$("#rd").textContent=t("echo_round",seq.length);say(t("echo_watch"));await wait(700);
-    for(const i of seq){if(!alive())return;flash(i);await wait(600)}
+    for(const i of seq){if(!alive())return;flash(i);await wait(Math.max(360,600-seq.length*20))}
     if(alive()){accept=true;pos=0;say(t("echo_you"))}};
   pads.forEach((p,i)=>p.onclick=()=>{
     if(!accept)return;flash(i);
@@ -855,12 +893,13 @@ function reactPlay(){
   exitBtn();const r0=run,rb=$("#rb");
   const setS=(cls,txt)=>{rb.className="react "+cls;rb.textContent=txt};
   const arm=()=>{state="wait";setS("wait",t("react_wait"));to=setTimeout(()=>{if(r0!==run)return;state="go";setS("go",t("react_go"));t0=performance.now()},1500+Math.random()*2500)};
-  rb.onclick=()=>{
+  const hit=()=>{
     if(state==="idle")arm();
     else if(state==="wait"){clearTimeout(to);state="idle";setS("wait",t("react_early"));sfx.no()}
     else if(state==="go"){const ms=Math.round(performance.now()-t0);res.push(ms);round++;sfx.click();
       if(round===5){const avg=Math.round(res.reduce((a,b)=>a+b,0)/5);state="done";rb.disabled=true;finish("react",avg,true,"u_ms",t("react_done",avg),reactPlay)}
-      else{state="idle";setS("",t("react_ms",ms));$("#rq").textContent=t("react_round",round+1)}}}}
+      else{state="idle";setS("",t("react_ms",ms));$("#rq").textContent=t("react_round",round+1)}}}
+  rb.onpointerdown=e=>{e.preventDefault();hit()};rb.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();hit()}}}
 
 /* ===================== boot ===================== */
 function boot(){
