@@ -1,12 +1,8 @@
-<!DOCTYPE html>
+x<!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<meta name="description" content="The Oracle ∞ – 8 games of logic, memory, speed and reflection. Works offline in your browser.">
-<meta name="theme-color" content="#0a0620">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E%F0%9F%94%AE%3C/text%3E%3C/svg%3E">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <title>The Oracle ∞</title>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700&family=Cinzel:wght@500;700&family=Spectral:ital,wght@0,300;0,500;1,300&display=swap">
 <style>
@@ -125,13 +121,26 @@ body.rm *{animation:none!important;transition:none!important}
 [lang=ar] body,[lang=ar] button,[lang=ar] input,[lang=ar] h2,[lang=ar] h3,[lang=ar] .cta,[lang=ar] .gm b,[lang=ar] .react{font-family:"Cairo","Segoe UI",Tahoma,sans-serif;letter-spacing:0}
 [lang=ar] body{line-height:1.75}
 @media(max-width:520px){.gm{grid-template-columns:1fr}.gm button{min-height:0}}
-html{color-scheme:dark}button{touch-action:manipulation;-webkit-tap-highlight-color:transparent}.react{touch-action:none;user-select:none;-webkit-user-select:none}
-#toasts{position:fixed;bottom:16px;inset-inline:0;z-index:12;display:grid;justify-items:center;gap:.5rem;pointer-events:none}
-.toast{background:#150c38;border:1px solid var(--edge);border-radius:999px;padding:.5rem 1.1rem;font-size:.92rem;box-shadow:0 0 24px rgba(120,60,255,.4);animation:tin .3s both}@keyframes tin{from{opacity:0;transform:translateY(10px)}}
-#coreW{width:84px;margin:.4rem auto 1.4rem;transition:transform .2s}
-.core{width:84px;height:84px;border-radius:50%;position:relative;background:radial-gradient(circle at 35% 30%,#fff,var(--aurora) 16%,var(--arcane) 55%,#1b0b4d);box-shadow:0 0 36px var(--arcane),0 0 80px rgba(93,242,214,.3);animation:cp 4s ease-in-out infinite}
-.core::before,.core::after{content:"";position:absolute;inset:-12px;border-radius:50%;border:1px solid var(--aurora);border-left-color:transparent;border-right-color:transparent;animation:sp 6s linear infinite}
-.core::after{inset:-22px;border-color:var(--ember) transparent;animation-duration:10s;animation-direction:reverse}@keyframes cp{50%{transform:scale(1.06);filter:brightness(1.2)}}
+
+/* ===== v6: progression, dialogs, a11y ===== */
+.sr{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+button{touch-action:manipulation}
+.player{border:1px solid var(--edge);border-radius:16px;padding:.8rem 1rem;background:rgba(8,4,26,.45);margin-bottom:.8rem}
+.player .bar{margin:.4rem 0 0}.meta{gap:.6rem}.stats b,.meta b,.big{unicode-bidi:isolate}
+.daily{display:flex;justify-content:space-between;align-items:center;gap:.8rem;border:1px solid var(--edge);border-radius:16px;padding:.8rem 1rem;margin-bottom:1rem;background:linear-gradient(135deg,rgba(106,47,214,.25),rgba(31,168,160,.18))}
+.daily small{display:block;color:var(--dim);font-size:.88rem}.daily button{flex:none}
+.sg{display:grid;grid-template-columns:repeat(2,1fr);gap:.6rem;margin:.8rem 0}
+.sg div{border:1px solid var(--edge);border-radius:12px;padding:.6rem .8rem;background:rgba(8,4,26,.4)}.sg b{display:block;font-size:1.3rem;color:var(--ember);font-weight:500}
+.rw{margin:.6rem 0}.rw p{margin:.2rem 0}.xp{color:var(--ember);font-weight:500;font-size:1.1rem}
+.alist,.hlist{list-style:none;padding:0;margin:.4rem 0}.alist{display:grid;gap:.5rem}
+.alist li{display:flex;gap:.7rem;align-items:center;border:1px solid var(--edge);border-radius:12px;padding:.5rem .8rem;opacity:.55}
+.alist li.on{opacity:1;border-color:var(--ember)}.alist li>span{font-size:1.5rem}.alist li div{flex:1}.alist b{font-weight:500}.alist em{font-style:normal;color:var(--dim);font-size:.8rem}
+.hlist li{display:flex;justify-content:space-between;gap:.6rem;flex-wrap:wrap;border-bottom:1px solid rgba(180,107,255,.15);padding:.35rem 0;font-size:.9rem}.hlist em{font-style:normal;color:var(--ember)}
+.hintline{text-align:center;color:var(--dim);font-size:.9rem;margin:.4rem 0 .8rem}
+#toasts{position:fixed;inset-inline:0;bottom:14px;z-index:12;display:flex;flex-direction:column;align-items:center;gap:.5rem;pointer-events:none}
+.toast{background:#150c38;border:1px solid var(--ember);border-radius:12px;padding:.5rem 1rem;box-shadow:0 0 24px rgba(255,200,107,.35);animation:en .4s both;max-width:90vw;text-align:center}
+#dlg{position:fixed;inset:0;z-index:11;display:none;place-items:center;background:rgba(5,2,18,.78);backdrop-filter:blur(6px);padding:1rem}#dlg.open{display:grid}
+@media(max-width:520px){.daily{flex-direction:column;align-items:stretch;text-align:center}}
 </style>
 </head>
 <body data-gfx="high">
@@ -145,8 +154,13 @@ html{color-scheme:dark}button{touch-action:manipulation;-webkit-tap-highlight-co
     <div class="ring" style="width:460px;height:460px;left:-230px;top:-230px;border-color:var(--ember);box-shadow:0 0 30px var(--ember),inset 0 0 30px var(--ember);animation:r1 22s linear infinite reverse"></div>
   </div>
 </div></div>
-<div id="toasts" aria-live="polite"></div>
 <div id="flash"></div>
+<div id="live" class="sr" aria-live="polite" aria-atomic="true"></div>
+<div id="toasts" aria-hidden="true"></div>
+<div id="dlg" role="alertdialog" aria-modal="true" aria-labelledby="dlgt" aria-describedby="dlgp"><div class="panel">
+  <h2 id="dlgt"></h2><p id="dlgp" class="fb"></p>
+  <div class="row2" style="margin-top:1rem"><button id="dno"></button><button id="dyes" class="cta" style="margin:0"></button></div>
+</div></div>
 <button class="gear" id="gb" data-ia="set_h" aria-label="Settings">⚙️</button>
 <div id="set" role="dialog" aria-modal="true" aria-label="Settings"><div class="panel">
   <h2 data-i="set_h">Settings</h2>
@@ -163,7 +177,6 @@ html{color-scheme:dark}button{touch-action:manipulation;-webkit-tap-highlight-co
 </div></div>
 <main>
   <div class="langbar" role="group" aria-label="Language"><button data-l="ar">العربية</button><button data-l="en">English</button><button data-l="fr">Français</button></div>
-  <div id="coreW" aria-hidden="true"><div class="core"></div></div>
   <h1>The Oracle ∞</h1>
   <p class="sub" data-i="sub"></p>
   <div id="tilt"><div id="app" tabindex="-1"><div class="load" role="status"><span class="spin"></span><span data-i="loading">Summoning the Oracle…</span></div></div></div>
@@ -173,7 +186,7 @@ html{color-scheme:dark}button{touch-action:manipulation;-webkit-tap-highlight-co
 /* ===== i18n core ===== */
 const I18N=(()=>{const D={};let lang="en";
   const raw=k=>{const v=D[lang]&&D[lang][k];return v!==undefined?v:D.en&&D.en[k]};
-  return{add:(l,o)=>{D[l]=o},raw,has:l=>!!D[l],keys:l=>Object.keys(D[l]||{}),get lang(){return lang},
+  return{add:(l,o)=>{D[l]=Object.assign(D[l]||{},o)},raw,has:l=>!!D[l],keys:l=>Object.keys(D[l]||{}),get lang(){return lang},
     set(l){lang=D[l]?l:"en";document.documentElement.lang=lang;document.documentElement.dir=lang==="ar"?"rtl":"ltr"},
     t:(k,...a)=>{const s=raw(k);return typeof s!=="string"?String(k):s.replace(/\{(\d)\}/g,(_,i)=>a[i]===undefined?"":a[i])}}})();
 /* ===== dictionaries: English, Arabic, French ===== */
@@ -184,7 +197,7 @@ chip1:"🎮 8 games",chip2:"🌍 3 languages",chip3:"💡 hints",chip4:"💾 sav
 enter:"Enter the Oracle",how:"How to play",menu_h:"Choose a game",
 menu_note:"Puzzle results and the personality reflection are separate: one measures puzzle performance, the other is for self-reflection.",
 progress:"My progress",back:"Back",gotit:"Got it",exit:"✕ Exit",exit2:"Tap again to exit",again:"Play again",tomenu:"Back to the menu",start:"Start",moves:"Moves",easy:"Easy",hard:"Hard",newbest:"🏆 New personal best!",
-g_logic:"Shape Logic",g_logic_d:"160 puzzles, 4 levels, hints and streaks",
+g_logic:"Shape Logic",g_logic_d:"80 puzzles, 4 levels, hints and streaks",
 g_mb:"Personality Reflection",g_mb_d:"24 statements and a radar report",
 g_mem:"Memory Match",g_mem_d:"Find all the hidden pairs",
 g_echo:"Pattern Echo",g_echo_d:"Repeat the growing light-and-sound pattern",
@@ -247,7 +260,7 @@ D:{INTJ:"Strategic, independent, analytical and future-focused.",INTP:"Curious, 
 card:"Card {0}",mem_done:"All pairs found in {0} moves!",echo_round:"Round {0}",echo_watch:"Watch the pattern…",echo_you:"Your turn!",echo_over:"Game over. You completed {0} rounds.",
 shuffle:"Shuffle",slide_win:"Solved in {0} moves!",math_intro:"Solve as many as you can in {0} seconds. A wrong answer costs 3 seconds.",math_ok:"Correct: {0}",math_done:"Time’s up! {0} correct.",
 lights_goal:"Turn off every light. Each tap flips the tapped light and its neighbours.",lights_win:"All dark! Solved in {0} moves.",lights_new:"New puzzle",
-react_intro:"Tap the box as soon as it turns green. Five rounds.",react_tap:"Tap to start",react_wait:"Wait for green…",react_go:"Tap now!",react_early:"Too early! Tap to try again.",react_ms:"{0} ms. Tap for the next round.",react_round:"Round {0} of 5",react_done:"Average of 5: {0} ms",share:"Share result",copied:"Copied ✓",share_txt:"{0} · The Oracle ∞ — can you beat it?",lvl:"Level",daily:"Daily challenge",t_daily:"Daily challenge complete! +{0} XP",t_lvl:"Level up! You are level {0}",ach_first:"First play",ach_ten:"10 games played",ach_all:"Tried all 8 games",ach_perfect:"Perfect logic run",ach_fast:"Lightning reflexes",ach_lv5:"Reach level 5",prof_h:"Profile",prof_xp:"Total XP",prof_plays:"Games played",prof_streak:"Daily streak",prof_note:"Local records stored on this device only. There is no online ranking."
+react_intro:"Tap the box as soon as it turns green. Five rounds.",react_tap:"Tap to start",react_wait:"Wait for green…",react_go:"Tap now!",react_early:"Too early! Tap to try again.",react_ms:"{0} ms. Tap for the next round.",react_round:"Round {0} of 5",react_done:"Average of 5: {0} ms"
 });
 
 I18N.add("ar",{
@@ -257,7 +270,7 @@ chip1:"🎮 8 ألعاب",chip2:"🌍 3 لغات",chip3:"💡 تلميحات",ch
 enter:"ادخل إلى العرّاف",how:"طريقة اللعب",menu_h:"اختر لعبة",
 menu_note:"نتائج الألغاز منفصلة عن تأمل الشخصية: الأولى تقيس أداءك في الألغاز، والثانية للتأمل الذاتي فقط.",
 progress:"تقدّمي",back:"رجوع",gotit:"فهمت",exit:"✕ خروج",exit2:"اضغط مرة أخرى للخروج",again:"العب مجدداً",tomenu:"العودة إلى القائمة",start:"ابدأ",moves:"الحركات",easy:"سهل",hard:"صعب",newbest:"🏆 رقم قياسي شخصي جديد!",
-g_logic:"منطق الأشكال",g_logic_d:"160 لغزاً و4 مستويات وتلميحات",
+g_logic:"منطق الأشكال",g_logic_d:"80 لغزاً و4 مستويات وتلميحات",
 g_mb:"تأمل الشخصية",g_mb_d:"24 عبارة وتقرير برسم رادار",
 g_mem:"تطابق الذاكرة",g_mem_d:"اعثر على كل الأزواج المخفية",
 g_echo:"صدى النمط",g_echo_d:"كرّر نمط الأضواء والأصوات المتزايد",
@@ -320,7 +333,7 @@ D:{INTJ:"استراتيجي مستقل تحليلي ويركّز على المس
 card:"البطاقة {0}",mem_done:"وجدت كل الأزواج في {0} حركة!",echo_round:"الجولة {0}",echo_watch:"راقب النمط…",echo_you:"دورك!",echo_over:"انتهت اللعبة. أكملت {0} جولات.",
 shuffle:"إعادة الخلط",slide_win:"تم الحل في {0} حركة!",math_intro:"حلّ أكبر عدد ممكن خلال {0} ثانية. الإجابة الخاطئة تكلّفك 3 ثوانٍ.",math_ok:"الصحيحة: {0}",math_done:"انتهى الوقت! {0} إجابة صحيحة.",
 lights_goal:"أطفئ كل الأضواء. تبدّل كل نقرة الضوء المضغوط وجيرانه.",lights_win:"أظلم كل شيء! تم الحل في {0} حركة.",lights_new:"لغز جديد",
-react_intro:"اضغط على المربع فور أن يتحول إلى الأخضر. خمس جولات.",react_tap:"اضغط للبدء",react_wait:"انتظر اللون الأخضر…",react_go:"اضغط الآن!",react_early:"مبكر جداً! اضغط للمحاولة مجدداً.",react_ms:"{0} م.ث. اضغط للجولة التالية.",react_round:"الجولة {0} من 5",react_done:"متوسط 5 جولات: {0} م.ث",share:"شارك النتيجة",copied:"تم النسخ ✓",share_txt:"{0} · العرّاف ∞ — هل تستطيع التفوق عليّ؟",lvl:"المستوى",daily:"تحدي اليوم",t_daily:"أنجزت تحدي اليوم! +{0} نقطة خبرة",t_lvl:"ارتقيت! أنت الآن في المستوى {0}",ach_first:"أول لعبة",ach_ten:"10 ألعاب",ach_all:"جرّبت كل الألعاب الثماني",ach_perfect:"جولة منطق كاملة",ach_fast:"ردود فعل البرق",ach_lv5:"بلوغ المستوى 5",prof_h:"الملف الشخصي",prof_xp:"مجموع الخبرة",prof_plays:"الألعاب الملعوبة",prof_streak:"سلسلة الأيام",prof_note:"سجلات محلية على هذا الجهاز فقط. لا يوجد ترتيب عبر الإنترنت."
+react_intro:"اضغط على المربع فور أن يتحول إلى الأخضر. خمس جولات.",react_tap:"اضغط للبدء",react_wait:"انتظر اللون الأخضر…",react_go:"اضغط الآن!",react_early:"مبكر جداً! اضغط للمحاولة مجدداً.",react_ms:"{0} م.ث. اضغط للجولة التالية.",react_round:"الجولة {0} من 5",react_done:"متوسط 5 جولات: {0} م.ث"
 });
 
 I18N.add("fr",{
@@ -330,7 +343,7 @@ chip1:"🎮 8 jeux",chip2:"🌍 3 langues",chip3:"💡 indices",chip4:"💾 enre
 enter:"Entrer dans l’Oracle",how:"Comment jouer",menu_h:"Choisissez un jeu",
 menu_note:"Les résultats des énigmes et la réflexion sur la personnalité sont distincts : l’un mesure la performance aux énigmes, l’autre sert à la réflexion personnelle.",
 progress:"Ma progression",back:"Retour",gotit:"Compris",exit:"✕ Quitter",exit2:"Touchez encore pour quitter",again:"Rejouer",tomenu:"Retour au menu",start:"Commencer",moves:"Coups",easy:"Facile",hard:"Difficile",newbest:"🏆 Nouveau record personnel !",
-g_logic:"Logique des formes",g_logic_d:"160 énigmes, 4 niveaux, indices et séries",
+g_logic:"Logique des formes",g_logic_d:"80 énigmes, 4 niveaux, indices et séries",
 g_mb:"Réflexion sur la personnalité",g_mb_d:"24 affirmations et un rapport en radar",
 g_mem:"Paires mémoire",g_mem_d:"Retrouvez toutes les paires cachées",
 g_echo:"Écho de motifs",g_echo_d:"Répétez la séquence de lumières et de sons",
@@ -393,9 +406,51 @@ D:{INTJ:"Stratégique, indépendant, analytique et tourné vers l’avenir.",INT
 card:"Carte {0}",mem_done:"Toutes les paires trouvées en {0} coups !",echo_round:"Manche {0}",echo_watch:"Observez la séquence…",echo_you:"À vous !",echo_over:"Partie terminée. Vous avez terminé {0} manches.",
 shuffle:"Mélanger",slide_win:"Résolu en {0} coups !",math_intro:"Résolvez-en un maximum en {0} secondes. Une mauvaise réponse coûte 3 secondes.",math_ok:"Correctes : {0}",math_done:"Temps écoulé ! {0} correctes.",
 lights_goal:"Éteignez toutes les lumières. Chaque pression inverse la lumière touchée et ses voisines.",lights_win:"Tout est éteint ! Résolu en {0} coups.",lights_new:"Nouvelle grille",
-react_intro:"Touchez le carré dès qu’il devient vert. Cinq manches.",react_tap:"Touchez pour commencer",react_wait:"Attendez le vert…",react_go:"Touchez maintenant !",react_early:"Trop tôt ! Touchez pour réessayer.",react_ms:"{0} ms. Touchez pour la manche suivante.",react_round:"Manche {0} sur 5",react_done:"Moyenne sur 5 : {0} ms",share:"Partager",copied:"Copié ✓",share_txt:"{0} · The Oracle ∞ — saurez-vous faire mieux ?",lvl:"Niveau",daily:"Défi du jour",t_daily:"Défi du jour accompli ! +{0} XP",t_lvl:"Niveau supérieur ! Vous êtes niveau {0}",ach_first:"Première partie",ach_ten:"10 parties jouées",ach_all:"Les 8 jeux essayés",ach_perfect:"Logique parfaite",ach_fast:"Réflexes éclair",ach_lv5:"Atteindre le niveau 5",prof_h:"Profil",prof_xp:"XP total",prof_plays:"Parties jouées",prof_streak:"Série quotidienne",prof_note:"Records enregistrés uniquement sur cet appareil. Aucun classement en ligne."
+react_intro:"Touchez le carré dès qu’il devient vert. Cinq manches.",react_tap:"Touchez pour commencer",react_wait:"Attendez le vert…",react_go:"Touchez maintenant !",react_early:"Trop tôt ! Touchez pour réessayer.",react_ms:"{0} ms. Touchez pour la manche suivante.",react_round:"Manche {0} sur 5",react_done:"Moyenne sur 5 : {0} ms"
 });
 
+
+I18N.add("en",{
+ht6:"Earn XP by finishing games, level up, unlock achievements and complete the daily challenge. Everything is stored only on this device.",
+lvl:"Level {0}",xp_into:"{0} / {1} XP",xp_gain:"+{0} XP",lvl_up:"🎉 Level up! You reached level {0}.",ach_new:"🏅 Achievement unlocked: {0}",
+daily_h:"Daily challenge",daily_done:"✓ Done today (+{0} XP)",daily_go:"Play",daily_streak:"Daily streak",daily_bonus:"📅 Daily challenge completed! +{0} XP bonus.",
+d_logic:"Score at least {0}% in Shape Logic ({1} level).",d_mem:"Finish Memory Match (Easy) in {0} moves or fewer.",d_echo:"Complete {0} rounds in Pattern Echo.",d_slide:"Solve the 3×3 Sliding Tiles in {0} moves or fewer.",d_math:"Answer {0} sums correctly in Math Sprint.",d_lights:"Solve Lights Out in {0} moves or fewer.",d_react:"Average under {0} ms in the Reaction Test.",
+pr_xp_total:"Total XP",pr_dbest:"Best daily streak",pr_ach:"Achievements ({0}/{1})",pr_locked:"Locked",pr_hist:"Recent runs",pr_hist_empty:"No runs yet.",pr_stats:"Statistics",pr_bests:"Best scores",pr_xp_how:"How does XP work?",
+pr_nostore:"⚠️ This browser is blocking local storage, so your progress cannot be saved after you close the page.",pr_migrated:"Your older saved progress was imported.",pr_recovered:"Your saved progress file was damaged, so it was rebuilt from older data.",
+xr_logic:"Shape Logic: (10 + 4 × correct answers) × level multiplier (1, 1.5, 2, 3).",xr_mb:"Personality Reflection: 25 XP, once per day.",xr_mem:"Memory Match: 20 XP, plus up to 20 for finishing with few extra moves.",xr_echo:"Pattern Echo: 5 XP per completed round.",xr_slide:"Sliding Tiles: 30 XP (3×3) or 60 XP (4×4), +10 for an efficient solution.",xr_math:"Math Sprint: 2 XP per correct answer.",xr_lights:"Lights Out: 30 XP, +15 if solved in 15 moves or fewer.",xr_react:"Reaction Test: 25 XP, +10 for an average under 300 ms.",xr_daily:"Daily challenge: +50 XP once per day. XP is only awarded for finished runs, and each run is rewarded once.",
+dlg_exit_t:"Leave this game?",dlg_exit_p:"Your current run will be lost and no XP will be awarded.",dlg_leave:"Leave",dlg_stay:"Stay",dlg_clr_t:"Erase saved progress?",dlg_clr_p:"XP, level, achievements, best scores and history will be permanently erased from this device. Your language and settings are kept.",dlg_clr_ok:"Erase",
+gi_mem:"Flip two cards at a time. Matching pairs stay open.",gi_echo:"Watch the lights, then repeat the pattern in order. Keys 1–4 work too.",gi_slide:"Tap a tile next to the gap to slide it. Arrow keys move a tile into the gap.",gi_math:"Pick the correct result. Keys 1–4 choose an answer.",
+react_list:"Rounds: {0}",react_best:"Best round: {0} ms",ann_pair:"Pair found",
+ach_first:"First Steps",achd_first:"Finish any game.",ach_perfect:"Flawless Logic",achd_perfect:"Answer all 10 puzzles correctly in a Shape Logic run.",ach_master:"Master Mind",achd_master:"Score 70% or more on the Master level.",ach_sharp:"Sharp Memory",achd_sharp:"Finish Memory Match (Hard) in 14 moves or fewer.",ach_echo8:"Echo Chamber",achd_echo8:"Complete 8 rounds in Pattern Echo.",ach_slide4:"Tile Tamer",achd_slide4:"Solve a 4×4 Sliding Tiles board.",ach_math20:"Mental Calculator",achd_math20:"Answer 20 sums correctly in Math Sprint.",ach_lights20:"Night Owl",achd_lights20:"Solve Lights Out in 20 moves or fewer.",ach_react300:"Quick Reflexes",achd_react300:"Average under 300 ms in the Reaction Test.",ach_mirror:"Self-Reflection",achd_mirror:"Complete the Personality Reflection.",ach_allround:"All-Rounder",achd_allround:"Play all eight games at least once.",ach_daily3:"Daily Devotion",achd_daily3:"Complete the daily challenge 3 days in a row.",ach_lvl5:"Rising Star",achd_lvl5:"Reach player level 5.",ach_dedicated:"Dedicated",achd_dedicated:"Finish 25 runs."
+});
+
+I18N.add("ar",{
+ht6:"اكسب نقاط خبرة بإنهاء الألعاب، وارتقِ بالمستوى، وافتح الإنجازات، وأكمل تحدي اليوم. كل شيء يُحفظ على هذا الجهاز فقط.",
+lvl:"المستوى {0}",xp_into:"{0} / {1} نقطة خبرة",xp_gain:"+{0} نقطة خبرة",lvl_up:"🎉 ارتقيت! بلغت المستوى {0}.",ach_new:"🏅 إنجاز جديد: {0}",
+daily_h:"تحدي اليوم",daily_done:"✓ أُنجز اليوم (+{0} نقطة خبرة)",daily_go:"العب",daily_streak:"سلسلة الأيام",daily_bonus:"📅 أكملت تحدي اليوم! مكافأة +{0} نقطة خبرة.",
+d_logic:"احصل على {0}% على الأقل في منطق الأشكال (المستوى {1}).",d_mem:"أنهِ تطابق الذاكرة (سهل) في {0} حركة أو أقل.",d_echo:"أكمل {0} جولات في صدى النمط.",d_slide:"حلّ البلاطات المنزلقة 3×3 في {0} حركة أو أقل.",d_math:"أجب عن {0} عمليات بشكل صحيح في سباق الحساب.",d_lights:"حلّ إطفاء الأضواء في {0} حركة أو أقل.",d_react:"متوسط أقل من {0} م.ث في اختبار ردّ الفعل.",
+pr_xp_total:"مجموع نقاط الخبرة",pr_dbest:"أفضل سلسلة أيام",pr_ach:"الإنجازات ({0}/{1})",pr_locked:"مقفل",pr_hist:"آخر المحاولات",pr_hist_empty:"لا توجد محاولات بعد.",pr_stats:"الإحصاءات",pr_bests:"أفضل النتائج",pr_xp_how:"كيف تعمل نقاط الخبرة؟",
+pr_nostore:"⚠️ هذا المتصفح يمنع التخزين المحلي، لذا لن يُحفظ تقدّمك بعد إغلاق الصفحة.",pr_migrated:"تم استيراد تقدّمك المحفوظ سابقاً.",pr_recovered:"كان ملف تقدّمك المحفوظ تالفاً، فأُعيد بناؤه من بيانات أقدم.",
+xr_logic:"منطق الأشكال: (10 + 4 × الإجابات الصحيحة) × معامل المستوى (1 و1.5 و2 و3).",xr_mb:"تأمل الشخصية: 25 نقطة خبرة، مرة واحدة في اليوم.",xr_mem:"تطابق الذاكرة: 20 نقطة، وحتى 20 إضافية عند الإنهاء بأقل حركات زائدة.",xr_echo:"صدى النمط: 5 نقاط عن كل جولة مكتملة.",xr_slide:"البلاطات المنزلقة: 30 نقطة (3×3) أو 60 (4×4)، و+10 لحل اقتصادي.",xr_math:"سباق الحساب: نقطتان عن كل إجابة صحيحة.",xr_lights:"إطفاء الأضواء: 30 نقطة، و+15 إن حُلّت في 15 حركة أو أقل.",xr_react:"اختبار ردّ الفعل: 25 نقطة، و+10 لمتوسط أقل من 300 م.ث.",xr_daily:"تحدي اليوم: +50 نقطة مرة واحدة يومياً. تُمنح نقاط الخبرة للمحاولات المكتملة فقط، وتُكافأ كل محاولة مرة واحدة.",
+dlg_exit_t:"مغادرة اللعبة؟",dlg_exit_p:"ستضيع محاولتك الحالية ولن تُمنح أي نقاط خبرة.",dlg_leave:"مغادرة",dlg_stay:"البقاء",dlg_clr_t:"مسح التقدم المحفوظ؟",dlg_clr_p:"ستُمسح نقاط الخبرة والمستوى والإنجازات وأفضل النتائج والسجل نهائياً من هذا الجهاز. تبقى لغتك وإعداداتك.",dlg_clr_ok:"مسح",
+gi_mem:"اقلب بطاقتين في كل مرة. الأزواج المتطابقة تبقى مفتوحة.",gi_echo:"راقب الأضواء ثم كرّر النمط بالترتيب. تعمل المفاتيح 1–4 أيضاً.",gi_slide:"اضغط على بلاطة بجوار الفراغ لتحريكها. أسهم الاتجاه تحرّك بلاطة إلى الفراغ.",gi_math:"اختر النتيجة الصحيحة. المفاتيح 1–4 تختار الإجابة.",
+react_list:"الجولات: {0}",react_best:"أفضل جولة: {0} م.ث",ann_pair:"تم العثور على زوج",
+ach_first:"الخطوات الأولى",achd_first:"أنهِ أي لعبة.",ach_perfect:"منطق بلا أخطاء",achd_perfect:"أجب عن الألغاز العشرة كلها بشكل صحيح في جولة منطق الأشكال.",ach_master:"عقل أستاذ",achd_master:"احصل على 70% أو أكثر في مستوى الأستاذ.",ach_sharp:"ذاكرة حادة",achd_sharp:"أنهِ تطابق الذاكرة (صعب) في 14 حركة أو أقل.",ach_echo8:"غرفة الصدى",achd_echo8:"أكمل 8 جولات في صدى النمط.",ach_slide4:"مروّض البلاطات",achd_slide4:"حلّ لوحة البلاطات المنزلقة 4×4.",ach_math20:"حاسب ذهني",achd_math20:"أجب عن 20 عملية بشكل صحيح في سباق الحساب.",ach_lights20:"بومة الليل",achd_lights20:"حلّ إطفاء الأضواء في 20 حركة أو أقل.",ach_react300:"ردود أفعال سريعة",achd_react300:"متوسط أقل من 300 م.ث في اختبار ردّ الفعل.",ach_mirror:"تأمل ذاتي",achd_mirror:"أكمل تأمل الشخصية.",ach_allround:"لاعب شامل",achd_allround:"العب الألعاب الثماني كلها مرة واحدة على الأقل.",ach_daily3:"مواظبة يومية",achd_daily3:"أكمل تحدي اليوم 3 أيام متتالية.",ach_lvl5:"نجم صاعد",achd_lvl5:"بلغ المستوى 5.",ach_dedicated:"مثابر",achd_dedicated:"أنهِ 25 محاولة."
+});
+
+I18N.add("fr",{
+ht6:"Gagnez de l’XP en terminant des jeux, montez de niveau, débloquez des succès et relevez le défi du jour. Tout est stocké uniquement sur cet appareil.",
+lvl:"Niveau {0}",xp_into:"{0} / {1} XP",xp_gain:"+{0} XP",lvl_up:"🎉 Niveau supérieur ! Vous avez atteint le niveau {0}.",ach_new:"🏅 Succès débloqué : {0}",
+daily_h:"Défi du jour",daily_done:"✓ Terminé aujourd’hui (+{0} XP)",daily_go:"Jouer",daily_streak:"Série de jours",daily_bonus:"📅 Défi du jour accompli ! Bonus de +{0} XP.",
+d_logic:"Obtenez au moins {0} % en Logique des formes (niveau {1}).",d_mem:"Terminez Paires mémoire (facile) en {0} coups ou moins.",d_echo:"Terminez {0} manches dans Écho de motifs.",d_slide:"Résolvez le Taquin 3×3 en {0} coups ou moins.",d_math:"Répondez correctement à {0} calculs au Sprint de calcul.",d_lights:"Résolvez Lights Out en {0} coups ou moins.",d_react:"Moyenne inférieure à {0} ms au Test de réaction.",
+pr_xp_total:"XP total",pr_dbest:"Meilleure série de jours",pr_ach:"Succès ({0}/{1})",pr_locked:"Verrouillé",pr_hist:"Dernières parties",pr_hist_empty:"Aucune partie pour l’instant.",pr_stats:"Statistiques",pr_bests:"Meilleurs scores",pr_xp_how:"Comment fonctionne l’XP ?",
+pr_nostore:"⚠️ Ce navigateur bloque le stockage local : votre progression ne sera pas conservée après la fermeture de la page.",pr_migrated:"Votre ancienne progression enregistrée a été importée.",pr_recovered:"Votre fichier de progression était endommagé ; il a été reconstruit à partir d’anciennes données.",
+xr_logic:"Logique des formes : (10 + 4 × bonnes réponses) × multiplicateur de niveau (1 ; 1,5 ; 2 ; 3).",xr_mb:"Réflexion sur la personnalité : 25 XP, une fois par jour.",xr_mem:"Paires mémoire : 20 XP, plus jusqu’à 20 pour une partie avec peu de coups superflus.",xr_echo:"Écho de motifs : 5 XP par manche terminée.",xr_slide:"Taquin : 30 XP (3×3) ou 60 XP (4×4), +10 pour une solution efficace.",xr_math:"Sprint de calcul : 2 XP par bonne réponse.",xr_lights:"Lights Out : 30 XP, +15 si résolu en 15 coups ou moins.",xr_react:"Test de réaction : 25 XP, +10 pour une moyenne inférieure à 300 ms.",xr_daily:"Défi du jour : +50 XP une fois par jour. L’XP n’est attribuée que pour les parties terminées, et chaque partie n’est récompensée qu’une fois.",
+dlg_exit_t:"Quitter ce jeu ?",dlg_exit_p:"Votre partie en cours sera perdue et aucun XP ne sera attribué.",dlg_leave:"Quitter",dlg_stay:"Rester",dlg_clr_t:"Effacer la progression ?",dlg_clr_p:"L’XP, le niveau, les succès, les meilleurs scores et l’historique seront définitivement effacés de cet appareil. Votre langue et vos réglages sont conservés.",dlg_clr_ok:"Effacer",
+gi_mem:"Retournez deux cartes à la fois. Les paires identiques restent visibles.",gi_echo:"Observez les lumières, puis répétez la séquence dans l’ordre. Les touches 1–4 fonctionnent aussi.",gi_slide:"Touchez une tuile à côté du vide pour la glisser. Les flèches déplacent une tuile dans le vide.",gi_math:"Choisissez le bon résultat. Les touches 1–4 sélectionnent une réponse.",
+react_list:"Manches : {0}",react_best:"Meilleure manche : {0} ms",ann_pair:"Paire trouvée",
+ach_first:"Premiers pas",achd_first:"Terminez n’importe quel jeu.",ach_perfect:"Logique impeccable",achd_perfect:"Répondez correctement aux 10 énigmes d’une partie de Logique des formes.",ach_master:"Esprit maître",achd_master:"Obtenez 70 % ou plus au niveau Maître.",ach_sharp:"Mémoire aiguisée",achd_sharp:"Terminez Paires mémoire (difficile) en 14 coups ou moins.",ach_echo8:"Chambre d’écho",achd_echo8:"Terminez 8 manches dans Écho de motifs.",ach_slide4:"Dompteur de tuiles",achd_slide4:"Résolvez un Taquin 4×4.",ach_math20:"Calculateur mental",achd_math20:"Répondez correctement à 20 calculs au Sprint de calcul.",ach_lights20:"Oiseau de nuit",achd_lights20:"Résolvez Lights Out en 20 coups ou moins.",ach_react300:"Réflexes rapides",achd_react300:"Moyenne inférieure à 300 ms au Test de réaction.",ach_mirror:"Introspection",achd_mirror:"Terminez la Réflexion sur la personnalité.",ach_allround:"Touche-à-tout",achd_allround:"Jouez aux huit jeux au moins une fois.",ach_daily3:"Assiduité quotidienne",achd_daily3:"Accomplissez le défi du jour 3 jours de suite.",ach_lvl5:"Étoile montante",achd_lvl5:"Atteignez le niveau 5.",ach_dedicated:"Persévérant",achd_dedicated:"Terminez 25 parties."
+});
 
 /*PUZ-START*/
 const PuzzleEngine=(()=>{
@@ -407,7 +462,6 @@ function buildBanks(seed=2026){
   const K=x=>JSON.stringify(x);
   const mk=(seq,ans,cands,why,hint,mx)=>{const ak=K(ans),m=new Map();cands.forEach(c=>{if(K(c)!==ak)m.set(K(c),c)});
     const w=sh([...m.values()]);return w.length<5?null:{seq,ans,w:w.slice(0,5),why,hint,mx}};
-  const NAMES={rot:"the turning marker",sides:"the number of sides",fill:"the colour",scale:"the size",dots:"the dots"};
   function shape(nr){
     let at;do at=sh(["rot","sides","fill","scale","dots"]).slice(0,nr);while(at.includes("scale")&&at.includes("dots"));
     const F={},T=[],n=ri(3,6),f=ri(1,3),base={rot:0,sides:n,fill:f,scale:1,dots:0};
@@ -465,12 +519,154 @@ function buildBanks(seed=2026){
       return cellsToP(cells,cands,["m_rot",sc,sr],["hm_rot"])}];
   const fill=(n,gen)=>{const out=[],seen=new Set();let g=0;while(out.length<n&&g++<800){const p=gen();if(!p)continue;const k=K([p.seq,p.ans]);if(seen.has(k))continue;seen.add(k);out.push(p)}return out};
   const mix=(nr,NF)=>()=>r()<.7?shape(nr):pick(NF)();
-  return[fill(40,mix(1,NB)),fill(40,mix(2,NA)),fill(40,mix(3,NE)),
-    fill(40,()=>{const u=r();return u<.45?pick(MX)():u<.75?shape(4):pick(NM)()})];
+  return[fill(20,mix(1,NB)),fill(20,mix(2,NA)),fill(20,mix(3,NE)),
+    fill(20,()=>{const u=r();return u<.45?pick(MX)():u<.75?shape(4):pick(NM)()})];
 }
 return{buildBanks};
 })();
 /*PUZ-END*/
+/*LOGIC-START*/
+const OracleLogic=(()=>{
+  const GAMES=["logic","mb","mem","echo","slide","math","lights","react"];
+  const BESTKEYS=["logic-0","logic-1","logic-2","logic-3","mem-easy","mem-hard","echo","slide-3","slide-4","math","lights","react"];
+  const UNITS=["u_moves","u_ms","u_rounds","u_ok","u_pct"];
+  const DATE_RE=/^\d{4}-\d{2}-\d{2}$/,TYPE_RE=/^[EI][SN][TF][JP]$/;
+  const DAILY_BONUS=50,MAXHIST=20,LM=[1,1.5,2,3];
+  const clamp=(n,a,b)=>Math.min(b,Math.max(a,n));
+  const int=(v,d=0,max=1e9)=>{const n=Number(v);return Number.isFinite(n)?clamp(Math.floor(n),0,max):d};
+  const num=v=>typeof v==="number"&&Number.isFinite(v)&&v>=0?Math.round(v):null;
+
+  /* ---------- levels and XP ---------- */
+  const stepXp=n=>100+50*(n-1);
+  function levelInfo(xp){xp=int(xp);let level=1,rem=xp;while(rem>=stepXp(level)){rem-=stepXp(level);level++}
+    return{level,into:rem,need:stepXp(level),pct:Math.round(rem/stepXp(level)*100)}}
+  function xpFor(g,r){r=r||{};
+    switch(g){
+      case"logic":return Math.round((10+4*int(r.ok,0,10))*(LM[clamp(int(r.lv),0,3)]));
+      case"mb":return 25;
+      case"mem":return 20+Math.max(0,20-2*Math.max(0,int(r.moves)-int(r.pairs)));
+      case"echo":return 5*int(r.rounds,0,500);
+      case"slide":return (r.n===4?60:30)+(int(r.moves)<=(r.n===4?64:36)?10:0);
+      case"math":return 2*int(r.ok,0,500);
+      case"lights":return 30+(int(r.moves,999)<=15?15:0);
+      case"react":return 25+(int(r.avg,9999)<300?10:0);
+    }return 0}
+
+  /* ---------- dates and daily challenge ---------- */
+  const dateKey=(d=new Date())=>d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");
+  const dayNumber=s=>{const[y,m,d]=s.split("-").map(Number);return Math.floor(Date.UTC(y,m-1,d)/864e5)};
+  const DAILY=[
+    {g:"logic",lv:1,key:"logic-1",min:70,k:"d_logic"},{g:"mem",key:"mem-easy",max:12,k:"d_mem"},
+    {g:"echo",key:"echo",min:5,k:"d_echo"},{g:"slide",key:"slide-3",max:45,k:"d_slide"},
+    {g:"math",key:"math",min:12,k:"d_math"},{g:"lights",key:"lights",max:25,k:"d_lights"},
+    {g:"react",key:"react",max:400,k:"d_react"}];
+  const dailyFor=ds=>({...DAILY[((dayNumber(ds)%7)+7)%7],date:ds});
+  const dailyMet=(d,r)=>r.g===d.g&&r.key===d.key&&(d.min!=null?r.score>=d.min:r.score<=d.max);
+  const streakNow=(p,today)=>DATE_RE.test(p.dstreak.last)&&dayNumber(today)-dayNumber(p.dstreak.last)<=1?p.dstreak.count:0;
+
+  /* ---------- achievements (explicit unlock conditions) ---------- */
+  const ACH=[
+    {id:"first",ic:"🌟",test:p=>p.runs>=1},
+    {id:"perfect",ic:"🎯",test:(p,c)=>!!c&&c.g==="logic"&&c.ok===10},
+    {id:"master",ic:"👁️",test:p=>p.best["logic-3"]>=70},
+    {id:"sharp",ic:"🃏",test:p=>p.best["mem-hard"]<=14},
+    {id:"echo8",ic:"🎵",test:p=>p.best["echo"]>=8},
+    {id:"slide4",ic:"🧩",test:p=>p.best["slide-4"]!==undefined},
+    {id:"math20",ic:"➕",test:p=>p.best["math"]>=20},
+    {id:"lights20",ic:"💡",test:p=>p.best["lights"]<=20},
+    {id:"react300",ic:"⚡",test:p=>p.best["react"]<=300},
+    {id:"mirror",ic:"🧬",test:p=>p.plays.mb>=1},
+    {id:"allround",ic:"🎮",test:p=>GAMES.every(g=>p.plays[g]>=1)},
+    {id:"daily3",ic:"📅",test:p=>p.dstreak.best>=3},
+    {id:"lvl5",ic:"🚀",test:p=>levelInfo(p.xp).level>=5},
+    {id:"dedicated",ic:"🏅",test:p=>p.runs>=25}];
+
+  /* ---------- profile: shape, validation, migration ---------- */
+  const blank=()=>({v:2,xp:0,runs:0,plays:Object.fromEntries(GAMES.map(g=>[g,0])),best:{},ach:{},hist:[],
+    daily:{date:"",done:false},dstreak:{last:"",count:0,best:0},mbDay:"",mb:{type:"",date:""},
+    logic:{asked:0,solved:0,bestStreak:0},rids:[],migrated:false});
+  function validate(raw){
+    const p=blank();if(!raw||typeof raw!=="object")return p;
+    p.xp=int(raw.xp);p.runs=int(raw.runs);
+    GAMES.forEach(g=>{p.plays[g]=int(raw.plays&&raw.plays[g])});
+    Object.entries(raw.best&&typeof raw.best==="object"?raw.best:{}).forEach(([k,v])=>{const n=num(v);if(BESTKEYS.includes(k)&&n!==null)p.best[k]=n});
+    ACH.forEach(a=>{const v=Number(raw.ach&&raw.ach[a.id]);if(Number.isFinite(v)&&v>0)p.ach[a.id]=v});
+    if(Array.isArray(raw.hist))p.hist=raw.hist.filter(e=>e&&typeof e==="object"&&GAMES.includes(e.g)).slice(0,MAXHIST)
+      .map(e=>({t:int(e.t,0,8.64e15),g:e.g,k:String(e.k==null?"":e.k).slice(0,12),s:int(e.s),u:UNITS.includes(e.u)?e.u:"",x:int(e.x)}));
+    if(raw.daily&&DATE_RE.test(raw.daily.date))p.daily={date:raw.daily.date,done:raw.daily.done===true};
+    if(raw.dstreak){const s=raw.dstreak;p.dstreak={last:DATE_RE.test(s.last)?s.last:"",count:int(s.count,0,1e5),best:int(s.best,0,1e5)};p.dstreak.best=Math.max(p.dstreak.best,p.dstreak.count)}
+    if(DATE_RE.test(raw.mbDay))p.mbDay=raw.mbDay;
+    if(raw.mb&&TYPE_RE.test(raw.mb.type))p.mb={type:raw.mb.type,date:DATE_RE.test(raw.mb.date)?raw.mb.date:""};
+    if(raw.logic)p.logic={asked:int(raw.logic.asked),solved:Math.min(int(raw.logic.solved),int(raw.logic.asked)),bestStreak:int(raw.logic.bestStreak,0,100)};
+    if(Array.isArray(raw.rids))p.rids=raw.rids.filter(x=>typeof x==="string"&&x.length<40).slice(-30);
+    p.migrated=raw.migrated===true;
+    return p}
+  function migrate(old){ /* old = {g,best,stats,mb} read from the pre-profile storage keys */
+    const p=blank(),g=(old&&old.g)||{},b=(old&&old.best)||{},s=(old&&old.stats)||{},m=(old&&old.mb)||{};
+    ["mem-easy","mem-hard","echo","slide-3","slide-4","math","lights","react"].forEach(k=>{const v=num(g[k]);if(v!==null)p.best[k]=v});
+    for(let i=0;i<4;i++){const v=num(b[i]);if(v!==null&&v<=100)p.best["logic-"+i]=v}
+    p.logic={asked:int(s.asked),solved:Math.min(int(s.solved),int(s.asked)),bestStreak:int(s.bestStreak,0,100)};
+    Object.keys(p.best).forEach(k=>{const gm=k.startsWith("logic")?"logic":k.split("-")[0];p.plays[gm]=Math.max(p.plays[gm],1)});
+    p.plays.logic=Math.max(p.plays.logic,int(s.runs,0,1e6));
+    if(TYPE_RE.test(m.type)){p.mb={type:m.type,date:DATE_RE.test(m.date)?m.date:""};p.plays.mb=1}
+    p.runs=GAMES.reduce((a,x)=>a+p.plays[x],0);p.migrated=p.runs>0;
+    if(p.migrated)ACH.forEach(a=>{if(a.id!=="perfect"&&a.id!=="daily3"&&a.test(p,null))p.ach[a.id]=1});
+    return p}
+
+  /* ---------- applying one finished run (idempotent per run id) ---------- */
+  function applyRun(prev,r,today,ts){
+    const p=validate(prev);
+    if(!r||!GAMES.includes(r.g)||typeof r.id!=="string"||!r.id||num(r.score)===null)return{p,s:{rejected:true,xp:0,ach:[]}};
+    if(p.rids.includes(r.id))return{p,s:{dup:true,xp:0,ach:[]}};
+    const lvBefore=levelInfo(p.xp).level,score=num(r.score),d=r.d||{};
+    let xp=xpFor(r.g,d);
+    if(r.g==="mb"){if(p.mbDay===today)xp=0;else p.mbDay=today;if(TYPE_RE.test(d.type))p.mb={type:d.type,date:today}}
+    let newBest=false;
+    if(BESTKEYS.includes(r.key)){const o=p.best[r.key],had=o!==undefined,better=!had||(r.min?score<o:score>o);if(better){p.best[r.key]=score;newBest=had}}
+    p.plays[r.g]++;p.runs++;
+    if(r.g==="logic"){p.logic.asked+=int(d.asked,0,100);p.logic.solved+=int(d.ok,0,100);p.logic.bestStreak=Math.max(p.logic.bestStreak,int(d.streak,0,100));p.logic.solved=Math.min(p.logic.solved,p.logic.asked)}
+    const dl=dailyFor(today);let dailyDone=false;
+    if(p.daily.date!==today)p.daily={date:today,done:false};
+    if(!p.daily.done&&dailyMet(dl,{g:r.g,key:r.key,score})){
+      p.daily.done=true;dailyDone=true;xp+=DAILY_BONUS;
+      const consec=DATE_RE.test(p.dstreak.last)&&dayNumber(today)-dayNumber(p.dstreak.last)===1;
+      p.dstreak.count=consec?p.dstreak.count+1:1;p.dstreak.last=today;p.dstreak.best=Math.max(p.dstreak.best,p.dstreak.count)}
+    p.xp=clamp(p.xp+xp,0,1e9);p.rids=[...p.rids,r.id].slice(-30);
+    p.hist=[{t:int(ts,0,8.64e15),g:r.g,k:r.g==="mb"?p.mb.type:String(r.key||"").slice(0,12),s:score,u:UNITS.includes(r.unit)?r.unit:"",x:xp},...p.hist].slice(0,MAXHIST);
+    const ach=[];ACH.forEach(a=>{if(p.ach[a.id]===undefined&&a.test(p,{g:r.g,ok:d.ok})){p.ach[a.id]=int(ts,0,8.64e15)||1;ach.push(a.id)}});
+    const lvAfter=levelInfo(p.xp).level;
+    return{p,s:{xp,newBest,dailyDone,levelUp:lvAfter>lvBefore?lvAfter:0,ach}}}
+
+  /* ---------- pure game generators ---------- */
+  function makeMath(level,rand=Math.random){
+    const ri=(a,b)=>a+Math.floor(rand()*(b-a+1));
+    const op=["+","−","×"][ri(0,level>1?2:1)];let a,b,ans;
+    if(op==="+"){a=ri(2,9*level+5);b=ri(2,9*level+5);ans=a+b}
+    else if(op==="−"){a=ri(5,9*level+10);b=ri(1,a-1);ans=a-b}
+    else{a=ri(2,6+level);b=ri(2,6+level);ans=a*b}
+    const s=new Set([ans]);let g=0;
+    while(s.size<4&&g++<200){const w=ans+ri(1,Math.max(3,Math.round(ans*.2)))*(rand()<.5?-1:1);if(w>=0)s.add(w)}
+    for(let k=1;s.size<4;k++)s.add(ans+k);
+    return{a,op,b,ans,opts:[...s]}}
+  const lightsPress=(g,i,N=5)=>{const r=Math.floor(i/N),c=i%N;[[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dr,dc])=>{const rr=r+dr,cc=c+dc;if(rr>=0&&rr<N&&cc>=0&&cc<N)g[rr*N+cc]^=1})};
+  function lightsPuzzle(rand=Math.random,N=5){const g=Array(N*N).fill(0);
+    do{g.fill(0);for(let k=0;k<12;k++)lightsPress(g,Math.floor(rand()*N*N),N)}while(g.every(x=>!x));return g}
+  const slideNbs=(i,n)=>{const r=Math.floor(i/n),c=i%n,a=[];if(r>0)a.push(i-n);if(r<n-1)a.push(i+n);if(c>0)a.push(i-1);if(c<n-1)a.push(i+1);return a};
+  const slideSolved=b=>b.every((v,i)=>v===(i+1)%b.length);
+  function slideSolvable(b,n){const f=b.filter(x=>x);let inv=0;for(let i=0;i<f.length;i++)for(let j=i+1;j<f.length;j++)if(f[i]>f[j])inv++;
+    if(n%2===1)return inv%2===0;const rowFromBottom=n-Math.floor(b.indexOf(0)/n);return(rowFromBottom%2===0)===(inv%2===1)}
+  function slideBoard(n,rand=Math.random){const N=n*n;let b;
+    do{b=[...Array(N).keys()].map(i=>(i+1)%N);let blank=N-1,prev=-1;
+      for(let k=0;k<N*30;k++){const c=slideNbs(blank,n).filter(x=>x!==prev),m=c[Math.floor(rand()*c.length)];[b[blank],b[m]]=[b[m],b[blank]];prev=blank;blank=m}}while(slideSolved(b));
+    return b}
+  function reactStats(a){const s=[...a].sort((x,y)=>x-y),m=s.length>>1;
+    return{avg:Math.round(a.reduce((x,y)=>x+y,0)/a.length),best:s[0],median:s.length%2?s[m]:Math.round((s[m-1]+s[m])/2)}}
+
+  return{GAMES,BESTKEYS,UNITS,ACH,DAILY,DAILY_BONUS,levelInfo,xpFor,dateKey,dayNumber,dailyFor,dailyMet,streakNow,blank,validate,migrate,applyRun,
+    makeMath,lightsPuzzle,lightsPress,slideBoard,slideNbs,slideSolved,slideSolvable,reactStats}
+})();
+/*LOGIC-END*/
+
 (()=>{
 "use strict";
 const t=I18N.t;
@@ -478,13 +674,13 @@ const t=I18N.t;
 const $=s=>document.querySelector(s);
 const store={get(k,d){try{return JSON.parse(localStorage.getItem(k))??d}catch{return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch{}}};
 const obj=v=>v&&typeof v==="object"&&!Array.isArray(v)?v:{};
-const set=Object.assign({gfx:((navigator.hardwareConcurrency||8)<=4||(navigator.deviceMemory||8)<=4||matchMedia("(pointer:coarse)").matches)?"med":"high",sound:true,vol:.5,rm:matchMedia("(prefers-reduced-motion:reduce)").matches},obj(store.get("oracle-set",{})));
+const set=Object.assign({gfx:"high",sound:true,vol:.5,rm:matchMedia("(prefers-reduced-motion:reduce)").matches},obj(store.get("oracle-set",{})));
 if(!["low","med","high"].includes(set.gfx))set.gfx="high";
 set.vol=Math.min(1,Math.max(0,+set.vol||0));set.sound=set.sound!==false;set.rm=!!set.rm;
 let AC;
 function tone(f,d=.12,type="sine",v=1,t0=0,slide){
   if(!set.sound)return;
-  try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime+t0;
+  try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==="suspended")AC.resume();const o=AC.createOscillator(),g=AC.createGain(),t=AC.currentTime+t0;
     o.type=type;o.frequency.setValueAtTime(f,t);if(slide)o.frequency.exponentialRampToValueAtTime(slide,t+d);
     g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(.2*v*set.vol,t+.02);g.gain.exponentialRampToValueAtTime(.0001,t+d);
     o.connect(g).connect(AC.destination);o.start(t);o.stop(t+d+.05)}catch{}}
@@ -506,18 +702,16 @@ function galaxy(){resize();const n={low:80,med:170,high:300}[set.gfx],cl=["#ffff
   st=Array.from({length:n},()=>({x:Math.random()*2-1,y:Math.random()*2-1,z:Math.random(),p:Math.random()*6.28,c:cl[Math.floor(Math.random()*4)]}));
   neb=set.gfx==="low"?[]:[mkNeb(["120,60,255","40,200,210","255,90,170"]),mkNeb(["90,70,255","255,170,90","60,160,255"])]}
 const proj=(s,z)=>{const k=W*.1;return[W/2+s.x/z*k-sm.x*14*(1-z)-cur.ry*(1-z)*.6,H/2+s.y/z*k-sm.y*14*(1-z)]};
-function burst(el,col){if(set.rm)return;const r=el.getBoundingClientRect(),n={low:12,med:26,high:44}[set.gfx];
+function burst(el,col){if(set.rm||!el||pt.length>260)return;const r=el.getBoundingClientRect(),n={low:12,med:26,high:44}[set.gfx];
   for(let i=0;i<n;i++){const a=Math.random()*6.28,v=2+Math.random()*5;pt.push({x:r.left+r.width/2,y:r.top+r.height/2,vx:Math.cos(a)*v,vy:Math.sin(a)*v-2,l:1,c:col})}}
 const objs=[...document.querySelectorAll(".o[data-b]")].map(e=>({e,b:e.dataset.b.split(",").map(Number),d:+e.dataset.d}));
-let hid=false;
-addEventListener("visibilitychange",()=>{if(!document.hidden&&hid){hid=false;requestAnimationFrame(tick)}});
-function tick(t){if(document.hidden){hid=true;return}
+let frame=0;
+function tick(t){if(document.hidden){requestAnimationFrame(tick);return}if(set.gfx==="low"&&(frame++&1)){requestAnimationFrame(tick);return}
   const mx=set.rm?0:mouse.x,my=set.rm?0:mouse.y;
   sm.x+=(mx-sm.x)*.07;sm.y+=(my-sm.y)*.07;
   for(const k in cam)cur[k]+=((set.rm?0:cam[k])-cur[k])*.05;
   $("#world").style.transform=`translateZ(${cur.z}px) rotateX(${cur.rx-sm.y*6+Math.sin(t/3000)*2}deg) rotateY(${cur.ry+sm.x*8}deg)`;
   for(const{e,b,d}of objs)e.style.transform=`translate3d(${b[0]+sm.x*d*60}px,${b[1]+sm.y*d*40}px,${b[2]}px) rotateX(${sm.y*d*20}deg) rotateY(${sm.x*d*20}deg)`;
-  if(coreW)coreW.style.transform=`translate(${sm.x*8}px,${sm.y*6}px)`;
   $("#tilt").style.transform=`rotateY(${sm.x*3}deg) rotateX(${-sm.y*3}deg)`;
   c.clearRect(0,0,W,H);
   if(neb.length){c.globalCompositeOperation="lighter";
@@ -542,18 +736,15 @@ const openSet=()=>{lastFocus=document.activeElement;$("#set").classList.add("ope
 const closeSet=()=>{$("#set").classList.remove("open");if(lastFocus&&lastFocus.focus)lastFocus.focus()};
 $("#gb").onclick=()=>{sfx.click();openSet()};
 $("#sc").onclick=()=>{sfx.click();closeSet()};
-const PROGRESS_KEYS=["oracle-best","oracle-stats","oracle-mb","oracle-lv","oracle-timed","oracle-seen","oracle-g","oracle-prof"];
-(()=>{const b=$("#clr");let armed=false,tmo;
-  b.onclick=()=>{if(!armed){armed=true;b.textContent=t("set_clr2");tmo=setTimeout(()=>{armed=false;b.textContent=t("set_clr")},3000);return}
-    clearTimeout(tmo);armed=false;PROGRESS_KEYS.forEach(k=>{try{localStorage.removeItem(k)}catch{}});b.textContent=t("set_clrd");sfx.ok();setTimeout(()=>{b.textContent=t("set_clr")},1800)}})();
+
 document.querySelectorAll("#gfx button").forEach(b=>b.onclick=()=>{set.gfx=b.dataset.g;applySet();sfx.click()});
 $("#snd").onchange=e=>{set.sound=e.target.checked;applySet();sfx.click()};
 $("#vol").oninput=e=>{set.vol=e.target.value/100;applySet()};$("#vol").onchange=()=>sfx.ok();
 $("#rm").onchange=e=>{set.rm=e.target.checked;applySet()};
 addEventListener("keydown",e=>{
-  const open=$("#set").classList.contains("open");
-  if(e.key==="Escape"){if(open)closeSet();return}
-  if(open){if(e.key==="Tab"){const f=[...$("#set").querySelectorAll("button,input")],a=f[0],z=f[f.length-1];
+  const dlgO=$("#dlg").classList.contains("open"),open=dlgO||$("#set").classList.contains("open");
+  if(e.key==="Escape"){if(dlgO)closeDlg();else if(open)closeSet();return}
+  if(open){if(e.key==="Tab"){const f=[...(dlgO?$("#dlg"):$("#set")).querySelectorAll("button,input")],a=f[0],z=f[f.length-1];
     if(e.shiftKey&&document.activeElement===a){e.preventDefault();z.focus()}else if(!e.shiftKey&&document.activeElement===z){e.preventDefault();a.focus()}}return}
   if(e.ctrlKey||e.metaKey||e.altKey||/INPUT|TEXTAREA/.test(document.activeElement.tagName))return;
   const kb=app.querySelector('[data-kbd="'+e.key+'"]');if(kb){kb.click();return}
@@ -564,9 +755,9 @@ addEventListener("keydown",e=>{
 applySet();requestAnimationFrame(tick);
 
 /* ===== helpers ===== */
-const app=$("#app");let BANK=[],tm=null,run=0,dead=false;
+const app=$("#app");let BANK=[],tm=null,dead=false;
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a};
-function show(h,quick){clearInterval(tm);run++;dead=false;const f=$("#flash");
+function show(h,quick){cleanup();dead=false;const f=$("#flash");
   if(!quick&&!set.rm){f.classList.remove("on");void f.offsetWidth;f.classList.add("on")}
   app.classList.toggle("quick",!!quick);app.style.animation="none";void app.offsetWidth;app.style.animation="";app.innerHTML=h;window.scrollTo({top:0});
   const hd=app.querySelector("h2,.q");if(hd&&!$("#set").classList.contains("open")){hd.tabIndex=-1;hd.focus({preventScroll:true})}}
@@ -596,27 +787,82 @@ function setLang(l){I18N.set(l);store.set("oracle-lang",l);applyLang()}
 document.addEventListener("click",e=>{const b=e.target.closest("[data-l]");if(b){sfx.click();setLang(b.dataset.l)}});
 
 /* ===================== shared helpers ===================== */
-const paused=()=>document.hidden||$("#set").classList.contains("open");
-const esc=x=>String(x).replace(/[&<>"]/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]));
+const now=()=>performance.now();
+const LEAVE=[],TMO=new Set();
+function later(fn,ms){const id=setTimeout(()=>{TMO.delete(id);fn()},ms);TMO.add(id);return id}   /* timeouts owned by the current screen */
+function onLeave(fn){LEAVE.push(fn)}                                                              /* cleanup callbacks run when the screen changes */
+function cleanup(){clearInterval(tm);tm=null;TMO.forEach(clearTimeout);TMO.clear();while(LEAVE.length){try{LEAVE.pop()()}catch(e){/* ignore */}}}
+const paused=()=>document.hidden||$("#set").classList.contains("open")||$("#dlg").classList.contains("open");
+const esc=x=>String(x).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const lc=()=>I18N.lang==="ar"?"ar-u-nu-latn":I18N.lang;   /* Latin digits keep scores and equations consistent in Arabic */
+const nf=n=>{try{return new Intl.NumberFormat(lc()).format(n)}catch(e){return String(n)}};
+const fdate=ts=>{try{return new Intl.DateTimeFormat(lc(),{dateStyle:"medium",timeStyle:"short"}).format(new Date(ts))}catch(e){return String(new Date(ts).toISOString().slice(0,16))}};
+let RUNSEQ=0;const newRun=()=>Date.now().toString(36)+"-"+(++RUNSEQ);
+let liveT=0;
+function announce(msg){const l=$("#live");l.textContent="";clearTimeout(liveT);liveT=setTimeout(()=>{l.textContent=msg},40)}
+function toast(msg){const d=document.createElement("div");d.className="toast";d.textContent=msg;$("#toasts").appendChild(d);setTimeout(()=>d.remove(),4500)}
+
+/* ----- confirmation dialog ----- */
+let dlgOk=null,dlgFocus=null;
+function confirmDlg(title,msg,okLabel,onOk){dlgOk=onOk;dlgFocus=document.activeElement;
+  $("#dlgt").textContent=title;$("#dlgp").textContent=msg;$("#dyes").textContent=okLabel;$("#dno").textContent=t("dlg_stay");
+  $("#dlg").classList.add("open");$("#dno").focus()}
+function closeDlg(){$("#dlg").classList.remove("open");dlgOk=null;if(dlgFocus&&document.body.contains(dlgFocus)&&dlgFocus.focus)dlgFocus.focus()}
+$("#dno").onclick=()=>{sfx.click();closeDlg()};
+$("#dyes").onclick=()=>{const f=dlgOk;closeDlg();if(f)f()};
+$("#clr").onclick=()=>{sfx.click();confirmDlg(t("dlg_clr_t"),t("dlg_clr_p"),t("dlg_clr_ok"),clearProgress)};
+function clearProgress(){Profile.reset();toast(t("set_clrd"));if(RR)RR()}
+
+/* ----- persistent profile (single versioned record, validated on every load) ----- */
+const Profile=(()=>{
+  let p=null,okStore=true,recovered=false;
+  const rd=k=>{try{return localStorage.getItem(k)}catch(e){okStore=false;return null}};
+  const wr=(k,v)=>{try{localStorage.setItem(k,v);return true}catch(e){okStore=false;return false}};
+  function save(){wr("oracle-profile",JSON.stringify(p))}
+  function load(){
+    let raw=null;const s=rd("oracle-profile");
+    if(s!==null){try{raw=JSON.parse(s)}catch(e){recovered=true;wr("oracle-profile-bak",s)}}
+    if(raw&&typeof raw==="object"&&raw.v===2)p=OracleLogic.validate(raw);
+    else{p=OracleLogic.migrate({g:store.get("oracle-g",{}),best:store.get("oracle-best",{}),stats:store.get("oracle-stats",{}),mb:store.get("oracle-mb",{})});save()}
+    return p}
+  return{load,get:()=>p||load(),ok:()=>okStore,recovered:()=>recovered,
+    record(run){const r=OracleLogic.applyRun(p||load(),run,OracleLogic.dateKey(),Date.now());if(!r.s.dup&&!r.s.rejected){p=r.p;save()}return r.s},
+    reset(){p=OracleLogic.blank();recovered=false;["oracle-g","oracle-best","oracle-stats","oracle-mb","oracle-lv","oracle-timed","oracle-seen","oracle-profile-bak"].forEach(k=>{try{localStorage.removeItem(k)}catch(e){/* ignore */}});save()}}
+})();
+
+/* ----- rewards and announcements ----- */
+function rewardsHtml(sm){
+  if(!sm||sm.dup||sm.rejected)return"";
+  const L=[`<p class="xp ltr">${t("xp_gain",nf(sm.xp))}</p>`];
+  if(sm.dailyDone)L.push(`<p class="ok-t">${t("daily_bonus",nf(OracleLogic.DAILY_BONUS))}</p>`);
+  if(sm.levelUp)L.push(`<p class="ok-t">${t("lvl_up",nf(sm.levelUp))}</p>`);
+  sm.ach.forEach(id=>L.push(`<p class="ok-t">${t("ach_new",t("ach_"+id))}</p>`));
+  return`<div class="rw">${L.join("")}</div>`}
+function celebrate(sm,msg){
+  if(!sm||sm.dup||sm.rejected){announce(msg);return}
+  const parts=[msg,t("xp_gain",nf(sm.xp))];
+  if(sm.levelUp){const s=t("lvl_up",nf(sm.levelUp));parts.push(s);toast(s)}
+  sm.ach.forEach(id=>{const s=t("ach_new",t("ach_"+id));parts.push(s);toast(s)});
+  announce(parts.join(". "))}
+
+/* ----- shared screen pieces ----- */
 const gameHead=(id,extra)=>`<div class="meta"><span>${t("g_"+id)}</span><span>${extra||""}<button class="exit" id="ex">${t("exit")}</button></span></div>`;
-function exitBtn(){const b=$("#ex");if(!b)return;let arm=false,tmo;
-  b.onclick=()=>{if(arm){clearTimeout(tmo);menu();return}arm=true;b.textContent=t("exit2");tmo=setTimeout(()=>{arm=false;b.textContent=t("exit")},2500)}}
-function fatal(msg){if(dead)return;dead=true;clearInterval(tm);
+function exitBtn(){const b=$("#ex");if(b)b.onclick=()=>{sfx.click();confirmDlg(t("dlg_exit_t"),t("dlg_exit_p"),t("dlg_leave"),menu)}}
+function fatal(msg){if(dead)return;dead=true;cleanup();
   app.innerHTML=`<h2>${t("err_h")}</h2><p class="fb" style="text-align:center">${esc(msg)}</p><button class="cta" id="rl">${t("err_menu")}</button><button class="ghost" id="rr" style="display:block;margin:.8rem auto 0">${t("err_reload")}</button>`;
-  $("#rl").onclick=()=>{dead=false;menu()};$("#rr").onclick=()=>location.reload()}
+  $("#rl").onclick=()=>{dead=false;closeDlg();menu()};$("#rr").onclick=()=>location.reload()}
 function pickRun(lv){ /* prefers puzzles not seen recently */
   const bank=BANK[lv]||[],seen=obj(store.get("oracle-seen",{})),s=new Set(Array.isArray(seen[lv])?seen[lv]:[]);
   let pool=bank.map((_,i)=>i).filter(i=>!s.has(i));if(pool.length<10){pool=bank.map((_,i)=>i);s.clear()}
   const ids=shuffle(pool).slice(0,10);ids.forEach(i=>s.add(i));seen[lv]=[...s];store.set("oracle-seen",seen);return ids.map(i=>bank[i])}
-/* best results for quick games */
-const GB={all:()=>obj(store.get("oracle-g",{})),
-  submit(key,v,min){const g=GB.all(),o=g[key],had=typeof o==="number",better=!had||(min?v<o:v>o);if(better){g[key]=v;store.set("oracle-g",g)}return better&&had}};
-const BEST=[["mem-easy","g_mem","easy","u_moves"],["mem-hard","g_mem","hard","u_moves"],["echo","g_echo",0,"u_rounds"],["slide-3","g_slide","3×3","u_moves"],["slide-4","g_slide","4×4","u_moves"],["math","g_math",0,"u_ok"],["lights","g_lights",0,"u_moves"],["react","g_react",0,"u_ms"]];
-function finish(key,v,min,unitK,msg,again){ /* result card shown below the finished board */
-  const nb=GB.submit(key,v,min);sfx.done();award(key.split("-")[0],20+(nb?15:0),{fast:key==="react"&&v<250});
-  const d=document.createElement("div");d.className="fb";
-  d.innerHTML=`<div class="big ltr" style="font-size:2.2rem">${esc(t(unitK,v))}</div><p>${msg}</p>${nb?`<p class="ok-t">${t("newbest")}</p>`:""}<button class="cta" id="ag">${t("again")}</button><button class="ghost" id="shr" style="display:block;margin:.8rem auto 0">${t("share")}</button><button class="ghost" id="tmn" style="display:block;margin:.8rem auto 0">${t("tomenu")}</button>`;
-  app.appendChild(d);$("#ag").onclick=again;$("#shr").onclick=async()=>{const x=t("share_txt",t(unitK,v));try{if(navigator.share)await navigator.share({text:x});else{await navigator.clipboard.writeText(x);$("#shr").textContent=t("copied")}}catch{}};$("#tmn").onclick=menu;$("#ag").focus();burst($("#ag"),"#ffc86b");if(d.scrollIntoView)d.scrollIntoView({block:"nearest"})}
+function finish(o){ /* result card for the quick games; rewards are recorded exactly once per run id */
+  const sm=o.skip?null:Profile.record({id:o.id,g:o.g,key:o.key,score:o.score,min:o.min,unit:o.unit,d:o.d});
+  sfx.done();
+  const box=document.createElement("div");box.className="fb";
+  box.innerHTML=`<div class="big ltr" style="font-size:2.2rem">${esc(t(o.unit,nf(o.score)))}</div><p>${o.msg}</p>${o.extra||""}${sm&&sm.newBest?`<p class="ok-t">${t("newbest")}</p>`:""}${rewardsHtml(sm)}
+    <button class="cta" id="ag">${t("again")}</button><button class="ghost" id="tmn" style="display:block;margin:.8rem auto 0">${t("tomenu")}</button>`;
+  app.appendChild(box);$("#ag").onclick=o.again;$("#tmn").onclick=menu;$("#ag").focus();
+  celebrate(sm,o.msg);burst($("#ag"),"#ffc86b");if(box.scrollIntoView)box.scrollIntoView({block:"nearest"})}
 function picker(id,opts,start){ /* difficulty / size chooser */
   RR=()=>picker(id,opts,start);go("menu");
   show(`<h2>${t("g_"+id)}</h2><p class="fb" style="text-align:center">${t("g_"+id+"_d")}</p><div class="menu">${opts.map((o,i)=>`<button data-o="${i}"><span>${o[0]}<small>${o[1]}</small></span></button>`).join("")}</div><button class="ghost" id="bk">${t("back")}</button>`);
@@ -626,45 +872,38 @@ function intro(id,msg,start){
   show(`<h2>${t("g_"+id)}</h2><p class="fb" style="text-align:center">${msg}</p><button class="cta" id="st">${t("start")}</button><button class="ghost" id="bk">${t("back")}</button>`);
   $("#st").onclick=()=>{sfx.click();start()};$("#bk").onclick=menu;$("#st").focus()}
 
-/* ===================== welcome, how to play, progress ===================== */
+/* ===================== welcome, how to play ===================== */
 function welcome(){RR=welcome;go("menu");
   show(`<h2>${t("wel_h")}</h2><p class="fb" style="text-align:center">${t("wel_p")}</p>
    <div class="chips"><span>${t("chip1")}</span><span>${t("chip2")}</span><span>${t("chip3")}</span><span>${t("chip4")}</span></div>
    <button class="cta" id="en">${t("enter")}</button><button class="ghost" id="hw" style="display:block;margin:.8rem auto 0">${t("how")}</button>`);
   $("#en").onclick=()=>{sfx.click();menu()};$("#hw").onclick=()=>{sfx.click();howTo(welcome)};$("#en").focus()}
 function howTo(back){RR=()=>howTo(back);go("menu");
-  show(`<h2>${t("how")}</h2><div class="rep"><ol>${[1,2,3,4,5].map(i=>`<li>${t("ht"+i)}</li>`).join("")}</ol><h3>${t("ht_kb_h")}</h3><p>${t("ht_kb")}</p></div><button class="cta" id="bk">${t("gotit")}</button>`);
+  show(`<h2>${t("how")}</h2><div class="rep"><ol>${[1,2,3,4,5,6].map(i=>`<li>${t("ht"+i)}</li>`).join("")}</ol><h3>${t("ht_kb_h")}</h3><p>${t("ht_kb")}</p></div><button class="cta" id="bk">${t("gotit")}</button>`);
   $("#bk").onclick=()=>{sfx.click();back()};$("#bk").focus()}
-function progress(){RR=progress;go("res",true);
-  const g=GB.all(),st=obj(store.get("oracle-stats",{})),mb=obj(store.get("oracle-mb",{})),best=obj(store.get("oracle-best",{}));
-  let body;
-  if(!Object.keys(g).length&&!st.runs&&!mb.type)body=`<p class="fb" style="text-align:center">${t("pr_empty")}</p>`;
-  else body=`<h3>${t("g_logic")}</h3>${[0,1,2,3].map(i=>`<div class="meta"><span>${LVL[i].i} ${t("lv"+i)}</span><span>${typeof best[i]==="number"?t("u_pct",best[i]):t("pr_none")}</span></div><div class="bar"><i style="width:${+best[i]||0}%"></i></div>`).join("")}
-    <div class="stats"><span>${t("pr_runs")} <b>${st.runs||0}</b></span><span>${t("pr_acc")} <b>${st.asked?Math.round(st.solved/st.asked*100):0}%</b></span><span>${t("pr_streak")} <b>${st.bestStreak||0}</b></span></div>
-    <h3>${t("pr_games")}</h3>${BEST.map(r=>`<div class="meta"><span>${t(r[1])}${r[2]?" · "+t(r[2]):""}</span><b>${typeof g[r[0]]==="number"?esc(t(r[3],g[r[0]])):t("pr_none")}</b></div>`).join("")}
-    <p class="fb">${mb.type?t("pr_mb",esc(mb.type),esc(mb.date||"")):t("pr_nomb")}</p><p class="note">${t("pr_note")}</p>`;
-  show(`<h2>${t("progress")}</h2>${profPanel()}${body}<button class="cta" id="bk">${t("back")}</button>`);$("#bk").onclick=menu}
 
-/* ===================== progression: XP, levels, daily, achievements (local only) ===================== */
-const coreW=$("#coreW"),AK=["first","ten","all","perfect","fast","lv5"];
-const PR={get(){const p=obj(store.get("oracle-prof",{}));return{xp:Math.max(0,+p.xp||0),plays:Math.max(0,+p.plays||0),ach:Array.isArray(p.ach)?p.ach.filter(k=>AK.includes(k)):[],g:Array.isArray(p.g)?p.g:[],day:typeof p.day==="string"?p.day:"",dstreak:Math.max(0,+p.dstreak||0)}},put:p=>store.set("oracle-prof",p)};
-const lvlOf=xp=>{let l=1,n=100;while(xp>=n){xp-=n;l++;n=100+l*25}return{l,cur:xp,need:n}};
-const dayStr=(o=0)=>new Date(Date.now()-o*864e5).toLocaleDateString("en-CA");
-const dailyId=()=>GAMES[Math.floor(Date.parse(dayStr())/864e5)%GAMES.length][0];
-function toast(m){const h=$("#toasts"),d=document.createElement("div");d.className="toast";d.textContent=m;h.appendChild(d);setTimeout(()=>d.remove(),3200);while(h.children.length>3)h.firstChild.remove()}
-let awardedRun=-1;
-function award(gid,xp,fl={}){ /* once per finished game screen: guarded by the run counter */
-  if(awardedRun===run)return;awardedRun=run;
-  const p=PR.get(),before=lvlOf(p.xp).l;let bonus=0;
-  if(gid===dailyId()&&p.day!==dayStr()){p.dstreak=p.day===dayStr(1)?p.dstreak+1:1;p.day=dayStr();bonus=50;toast(t("t_daily",50))}
-  p.xp+=xp+bonus;p.plays++;if(!p.g.includes(gid))p.g.push(gid);
-  const A={first:()=>1,ten:()=>p.plays>=10,all:()=>p.g.length>=8,perfect:()=>!!fl.perfect,fast:()=>!!fl.fast,lv5:()=>lvlOf(p.xp).l>=5},got=[];
-  AK.forEach(k=>{if(!p.ach.includes(k)&&A[k]()){p.ach.push(k);got.push(k)}});
-  PR.put(p);toast("+"+(xp+bonus)+" XP");const L=lvlOf(p.xp).l;if(L>before)toast(t("t_lvl",L));got.forEach(k=>toast("🏆 "+t("ach_"+k)))}
-function profBar(){const p=PR.get(),L=lvlOf(p.xp),done=p.day===dayStr();
-  return `<div class="meta"><span>🔮 ${t("lvl")} <b>${L.l}</b></span><span>${L.cur}/${L.need} XP</span></div><div class="bar"><i style="width:${L.cur/L.need*100}%"></i></div><p class="note" style="margin:0 0 .4rem">⭐ ${t("daily")}: ${esc(t("g_"+dailyId()))}${done?" ✓":" (+50 XP)"}</p>`}
-function profPanel(){const p=PR.get(),L=lvlOf(p.xp);
-  return `<h3>${t("prof_h")}</h3><div class="stats"><span>${t("lvl")} <b>${L.l}</b></span><span>${t("prof_xp")} <b>${p.xp}</b></span><span>${t("prof_plays")} <b>${p.plays}</b></span><span>${t("prof_streak")} <b>${p.dstreak}</b></span></div><div class="chips">${AK.map(k=>`<span>${p.ach.includes(k)?"🏆":"🔒"} ${t("ach_"+k)}</span>`).join("")}</div><p class="note">${t("prof_note")}</p>`}
+/* ===================== progress dashboard ===================== */
+const BEST=[["mem-easy","g_mem","easy","u_moves"],["mem-hard","g_mem","hard","u_moves"],["echo","g_echo",0,"u_rounds"],["slide-3","g_slide","3×3","u_moves"],["slide-4","g_slide","4×4","u_moves"],["math","g_math",0,"u_ok"],["lights","g_lights",0,"u_moves"],["react","g_react",0,"u_ms"]];
+const xpBar=L=>`<div class="player"><div class="meta"><b>${t("lvl",nf(L.level))}</b><span class="ltr">${t("xp_into",nf(L.into),nf(L.need))}</span></div><div class="bar" role="progressbar" aria-valuemin="0" aria-valuemax="100" aria-valuenow="${L.pct}" aria-label="${t("lvl",nf(L.level))}"><i style="width:${L.pct}%"></i></div></div>`;
+const dailyText=dl=>t(dl.k,nf(dl.min!=null?dl.min:dl.max),dl.g==="logic"?t("lv"+dl.lv):"");
+function progress(){RR=progress;go("res",true);
+  const p=Profile.get(),L=OracleLogic.levelInfo(p.xp),A=OracleLogic.ACH,today=OracleLogic.dateKey();
+  const stat=(k,v)=>`<div><small>${k}</small><b class="ltr">${v}</b></div>`;
+  const notes=[Profile.ok()?"":t("pr_nostore"),Profile.recovered()?t("pr_recovered"):"",p.migrated?t("pr_migrated"):""].filter(Boolean).map(x=>`<div class="warn">${x}</div>`).join("");
+  const lv=i=>typeof p.best["logic-"+i]==="number"?t("u_pct",p.best["logic-"+i]):t("pr_none");
+  show(`<h2>${t("progress")}</h2>${notes}${xpBar(L)}
+   ${p.runs?"":`<p class="fb" style="text-align:center">${t("pr_empty")}</p>`}
+   <h3>${t("pr_stats")}</h3><div class="sg">${stat(t("pr_runs"),nf(p.runs))}${stat(t("pr_xp_total"),nf(p.xp))}${stat(t("daily_streak"),nf(OracleLogic.streakNow(p,today)))}${stat(t("pr_dbest"),nf(p.dstreak.best))}
+    ${p.logic.asked?stat(t("pr_acc"),Math.round(p.logic.solved/p.logic.asked*100)+"%")+stat(t("pr_streak"),nf(p.logic.bestStreak)):""}</div>
+   <h3>${t("pr_bests")}</h3>${[0,1,2,3].map(i=>`<div class="meta"><span>${t("g_logic")} · ${t("lv"+i)}</span><b>${lv(i)}</b></div>`).join("")}
+   ${BEST.map(r=>`<div class="meta"><span>${t(r[1])}${r[2]?" · "+t(r[2]):""}</span><b>${typeof p.best[r[0]]==="number"?esc(t(r[3],nf(p.best[r[0]]))):t("pr_none")}</b></div>`).join("")}
+   <div class="meta"><span>${t("g_mb")}</span><b class="ltr">${p.mb.type?esc(p.mb.type):t("pr_none")}</b></div>
+   <h3>${t("pr_ach",nf(Object.keys(p.ach).length),nf(A.length))}</h3>
+   <ul class="alist">${A.map(a=>`<li class="${p.ach[a.id]?"on":""}"><span aria-hidden="true">${a.ic}</span><div><b>${t("ach_"+a.id)}</b><small>${t("achd_"+a.id)}</small></div><em>${p.ach[a.id]?"✓":t("pr_locked")}</em></li>`).join("")}</ul>
+   <h3>${t("pr_hist")}</h3>${p.hist.length?`<ul class="hlist">${p.hist.map(h=>`<li><span>${esc(fdate(h.t))}</span><span>${t("g_"+h.g)} · <b class="ltr">${h.g==="mb"?esc(h.k):esc(t(h.u,nf(h.s)))}</b></span><em class="ltr">+${nf(h.x)} XP</em></li>`).join("")}</ul>`:`<p class="note">${t("pr_hist_empty")}</p>`}
+   <details><summary>${t("pr_xp_how")}</summary><ul>${["logic","mb","mem","echo","slide","math","lights","react","daily"].map(k=>`<li>${t("xr_"+k)}</li>`).join("")}</ul></details>
+   <p class="note">${t("pr_note")}</p><button class="cta" id="bk">${t("back")}</button>`);
+  $("#bk").onclick=menu}
 
 /* ===================== hub menu ===================== */
 const GAMES=[["logic","🔷"],["mb","🧬"],["mem","🃏"],["echo","🎵"],["slide","🧩"],["math","➕"],["lights","💡"],["react","⚡"]];
@@ -674,15 +913,22 @@ const START={logic:()=>iqSetup(menu),mb:()=>mbIntro(menu),
   slide:()=>picker("slide",[["3×3","8",3],["4×4","15",4]],slidePlay),
   math:()=>intro("math",t("math_intro",45),mathPlay),lights:()=>lightsPlay(),
   react:()=>intro("react",t("react_intro"),reactPlay)};
-function bestLine(id){let v="";
-  if(id==="logic"){const b=Object.values(obj(store.get("oracle-best",{}))).filter(x=>typeof x==="number");if(b.length)v=t("u_pct",Math.max(...b))}
-  else if(id==="mb"){const m=obj(store.get("oracle-mb",{}));if(m.type)v=m.type}
-  else{const g=GB.all();v=BEST.filter(r=>r[1]==="g_"+id&&typeof g[r[0]]==="number").map(r=>t(r[3],g[r[0]])).join(" · ")}
-  return v?`<em>🏆 ${esc(v)}</em>`:""}
+function startDaily(){const dl=OracleLogic.dailyFor(OracleLogic.dateKey());
+  if(dl.g==="logic"){store.set("oracle-lv",dl.lv);iqSetup(menu)}else if(dl.g==="mem")memPlay(6);else if(dl.g==="slide")slidePlay(3);else START[dl.g]()}
+function bestLine(id,p){let v="";
+  if(id==="logic"){const b=[0,1,2,3].map(i=>p.best["logic-"+i]).filter(x=>typeof x==="number");if(b.length)v=t("u_pct",Math.max(...b))}
+  else if(id==="mb"){v=p.mb.type}
+  else v=BEST.filter(r=>r[1]==="g_"+id&&typeof p.best[r[0]]==="number").map(r=>t(r[3],nf(p.best[r[0]]))).join(" · ");
+  return v?`<em class="ltr">🏆 ${esc(v)}</em>`:""}
 function menu(){RR=menu;go("menu");
-  show(`<h2>${t("menu_h")}</h2>${profBar()}<div class="gm">${GAMES.map(([id,ic])=>`<button data-g="${id}"><span class="ic">${ic}</span><b>${t("g_"+id)}${id===dailyId()?" ⭐":""}</b><small>${t("g_"+id+"_d")}</small>${bestLine(id)}</button>`).join("")}</div>
+  const p=Profile.get(),L=OracleLogic.levelInfo(p.xp),today=OracleLogic.dateKey(),dl=OracleLogic.dailyFor(today),done=p.daily.date===today&&p.daily.done,sn=OracleLogic.streakNow(p,today);
+  show(`${xpBar(L)}
+   <div class="daily"><div><b>📅 ${t("daily_h")}</b><small>${dailyText(dl)}</small>${sn?`<small>🔥 ${t("daily_streak")}: <span class="ltr">${nf(sn)}</span></small>`:""}</div>${done?`<span class="ok-t">${t("daily_done",nf(OracleLogic.DAILY_BONUS))}</span>`:`<button id="dg">${t("daily_go")}</button>`}</div>
+   ${Profile.ok()?"":`<div class="warn">${t("pr_nostore")}</div>`}
+   <h2>${t("menu_h")}</h2><div class="gm">${GAMES.map(([id,ic])=>`<button data-g="${id}"><span class="ic" aria-hidden="true">${ic}</span><b>${t("g_"+id)}</b><small>${t("g_"+id+"_d")}</small>${bestLine(id,p)}</button>`).join("")}</div>
    <div class="row2"><button id="hw">📖 ${t("how")}</button><button id="pg">📊 ${t("progress")}</button></div><p class="note">${t("menu_note")}</p>`);
   app.querySelectorAll("[data-g]").forEach(b=>b.onclick=()=>{sfx.click();START[b.dataset.g]()});
+  const dg=$("#dg");if(dg)dg.onclick=()=>{sfx.click();startDaily()};
   $("#hw").onclick=()=>{sfx.click();howTo(menu)};$("#pg").onclick=()=>{sfx.click();progress()}}
 
 /* ===================== game 1: shape logic ===================== */
@@ -693,7 +939,7 @@ function tx(w){const[k,...a]=w; /* localise an explanation descriptor from the p
   return t(k,...a)}
 function iqSetup(done){
   RR=()=>iqSetup(done);go("iq");
-  let lv=Math.min(3,Math.max(0,Math.floor(+store.get("oracle-lv",0))||0));const best=obj(store.get("oracle-best",{})),timed=store.get("oracle-timed",false)===true;
+  let lv=Math.min(3,Math.max(0,Math.floor(+store.get("oracle-lv",0))||0));const best=[0,1,2,3].map(i=>Profile.get().best["logic-"+i]),timed=store.get("oracle-timed",false)===true;
   show(`<h2>${t("lg_h")}</h2><div class="menu" id="lv">${LVL.map((l,i)=>`<button data-i="${i}" style="--c:${l.c}" class="${i===lv?"sel":""}"><span class="ic">${l.i}</span><span>${t("lv"+i)}<small>${t("lvd"+i)}${typeof best[i]==="number"?t("lg_best",best[i]):""}</small></span></button>`).join("")}</div>
    <label class="chk"><input type="checkbox" id="tt" ${timed?"checked":""}> <span>${t("lg_timed",LVL.map(l=>l.t).join(" / "))}</span></label>
    <button class="cta" id="st">${t("lg_begin")}</button><button class="ghost" id="bk">${t("back")}</button>
@@ -702,11 +948,11 @@ function iqSetup(done){
   $("#bk").onclick=done;
   $("#st").onclick=()=>{const tmd=$("#tt").checked;store.set("oracle-lv",lv);store.set("oracle-timed",tmd);sfx.click();iqRun(lv,tmd,done)}}
 function iqRun(lv,timed,done){
-  RR=null;
+  RR=null;const runId=newRun();
   const L=LVL[lv],qs=pickRun(lv);if(!qs.length)return fatal(t("err_nop"));
   let i=0,pts=0,ok=0,streak=0,bestS=0,hints=0,spent=0;const miss=[];
   function ask(){
-    const q=qs[i],opts=shuffle([q.ans,...q.w]),same=o=>JSON.stringify(o)===JSON.stringify(q.ans);let t0=Date.now(),over=false,hint=false;
+    const q=qs[i],opts=shuffle([q.ans,...q.w]),same=o=>JSON.stringify(o)===JSON.stringify(q.ans);let t0=now(),last=t0,act=0,over=false,hint=false;
     go("iq",true);
     const cells=q.seq.map(x=>`<div class="cell">${shp(x,q.mx?54:72)}</div>`).join("")+`<div class="cell qm">?</div>`;
     show(`${prog(i,qs.length)}<div class="meta"><span>${t("lv"+lv)} · ${i+1}/${qs.length}</span><span>⭐ ${pts}${streak>1?" · 🔥 "+streak:""}<button class="exit" id="ex">${t("exit")}</button></span></div>
@@ -717,28 +963,27 @@ function iqRun(lv,timed,done){
     exitBtn();
     const bs=[...app.querySelectorAll(".opt")];
     function fin(b){
-      if(over)return;over=true;clearInterval(tm);const dt=(Date.now()-t0)/1000;spent+=dt;const good=!!b&&same(opts[b.dataset.k]);let gain=0;
+      if(over)return;over=true;clearInterval(tm);const dt=act/1000;spent+=dt;const good=!!b&&same(opts[b.dataset.k]);let gain=0;
       bs.forEach((x,k)=>{x.disabled=true;if(same(opts[k]))x.classList.add("ok")});
       if(good){streak++;bestS=Math.max(bestS,streak);ok++;gain=Math.round(((hint?5:10)+Math.min(Math.max(streak-2,0),5)*2+(timed?Math.round(5*Math.max(0,1-dt/L.t)):0))*L.m);pts+=gain;sfx.ok();burst(b,L.c)}
       else{streak=0;miss.push([i+1,q.why]);sfx.no();if(b)b.classList.add("no")}
       $("#fb").innerHTML=`<div class="fb"><b class="${good?"ok-t":"no-t"}">${good?t("lg_ok",gain):b?t("lg_no"):t("lg_to")}</b><p>${tx(q.why)}</p></div><button class="cta" id="nx">${i+1<qs.length?t("lg_next"):t("lg_see")}</button>`;
-      $("#nx").focus();$("#nx").onclick=()=>{sfx.click();i++;i<qs.length?ask():result()}}
-    bs.forEach(b=>b.onclick=()=>{if(Date.now()-t0<350)return;fin(b)});
+      $("#nx").focus();announce($("#fb").textContent);$("#nx").onclick=()=>{sfx.click();i++;i<qs.length?ask():result()}}
+    bs.forEach(b=>b.onclick=()=>{if(now()-t0<350)return;fin(b)});
     $("#hb").onclick=()=>{if(over)return;hint=true;hints++;sfx.click();$("#fb").innerHTML=`<p class="fb">💡 ${tx(q.hint)}</p>`};
-    if(timed){const tbi=$("#tbi");tm=setInterval(()=>{if(paused()){t0+=100;return}const f=1-(Date.now()-t0)/1000/L.t;tbi.style.width=Math.max(f,0)*100+"%";if(f<.25)tbi.style.background="var(--blood)";if(f<=0)fin(null)},100)}}
+    const tbi=timed?$("#tbi"):null;tm=setInterval(()=>{const n=now(),dt=n-last;last=n;if(paused())return;act+=dt; /* active time only: pauses with dialogs and hidden tabs */
+      if(timed){const f=1-act/(L.t*1000);tbi.style.width=Math.max(f,0)*100+"%";if(f<.25)tbi.style.background="var(--blood)";if(f<=0)fin(null)}},100)}
   function result(){
-    const pct=Math.round(ok/qs.length*100),b=obj(store.get("oracle-best",{}));if(!(b[lv]>=pct)){b[lv]=pct;store.set("oracle-best",b)}
-    const stt=obj(store.get("oracle-stats",{}));stt.runs=(stt.runs||0)+1;stt.solved=(stt.solved||0)+ok;stt.asked=(stt.asked||0)+qs.length;stt.bestStreak=Math.max(stt.bestStreak||0,bestS);store.set("oracle-stats",stt);
-    award("logic",10+Math.round(ok*4*L.m),{perfect:ok===qs.length});
+    const pct=Math.round(ok/qs.length*100),sm=Profile.record({id:runId,g:"logic",key:"logic-"+lv,score:pct,min:false,unit:"u_pct",d:{lv,ok,asked:qs.length,streak:bestS}});
     const msg=pct>=85?t(lv<3?"lg_m1":"lg_m2"):pct>=60?t("lg_m3"):t("lg_m4");
     go("res");sfx.done();
     show(`${prog(1,1)}<h2>${t("lg_res",t("lv"+lv))}</h2><div class="big">${ok}/${qs.length}</div>
-     <div class="stats"><span>${t("lg_acc")} <b>${pct}%</b></span><span>${t("lg_pts")} <b>${pts}</b></span><span>${t("lg_bs")} <b>${bestS}</b></span><span>${t("lg_hints")} <b>${hints}</b></span><span>${t("lg_avg")} <b>${(spent/qs.length).toFixed(1)}s</b></span></div>
-     <p class="fb">${msg}</p>
+     <div class="stats"><span>${t("lg_acc")} <b>${pct}%</b></span><span>${t("lg_pts")} <b>${nf(pts)}</b></span><span>${t("lg_bs")} <b>${bestS}</b></span><span>${t("lg_hints")} <b>${hints}</b></span><span>${t("lg_avg")} <b>${(spent/qs.length).toFixed(1)}s</b></span></div>
+     <p class="fb">${msg}</p>${rewardsHtml(sm)}
      ${miss.length?`<details><summary>${t("lg_rev",miss.length)}</summary><ul>${miss.map(m=>`<li>${t("lg_pz",m[0],tx(m[1]))}</li>`).join("")}</ul></details>`:""}
      <details><summary>${t("lg_calc_s")}</summary><p>${t("lg_calc")}</p></details>
      <button class="cta" id="nx">${t("tomenu")}</button><p class="note">${t("lg_disc")}</p>`);
-    if(pct>=60)burst($(".big"),"#ffc86b");$("#nx").onclick=done}
+    celebrate(sm,t("lg_res",t("lv"+lv))+" "+ok+"/"+qs.length);if(pct>=60)burst($(".big"),"#ffc86b");$("#nx").onclick=done}
   ask()}
 
 /* ===================== game 2: personality reflection ===================== */
@@ -750,7 +995,7 @@ function mbIntro(done){
    <button class="cta" id="gb2">${t("mb_begin")}</button><button class="ghost" id="bk">${t("back")}</button>`);
   $("#bk").onclick=done;$("#gb2").onclick=()=>{sfx.click();mbRun(done)}}
 function mbRun(done){
-  RR=null;const QT=I18N.raw("Q"),LK=I18N.raw("LK"),qs=shuffle(PQP.map((_,k)=>k)),ans={};let i=0;
+  RR=null;const runId=newRun(),QT=I18N.raw("Q"),LK=I18N.raw("LK"),qs=shuffle(PQP.map((_,k)=>k)),ans={};let i=0;
   function ask(){
     const id=qs[i];go(i%2?"iq":"mb",true);
     show(`${prog(i,qs.length)}<div class="meta"><span>${t("mb_stmt",i+1,qs.length)}</span><span><button class="exit" id="ex">${t("exit")}</button></span></div>
@@ -758,9 +1003,9 @@ function mbRun(done){
      <div class="lk">${LK.map((lb,k)=>`<button data-v="${k-2}" class="${ans[id]===k-2?"sel":""}">${lb}</button>`).join("")}</div>
      ${i?`<button class="ghost" id="pb">${t("prev")}</button>`:""}`,true);
     exitBtn();
-    const r0=run,born=Date.now();let lock=false;
-    app.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{if(lock||Date.now()-born<300)return;lock=true;ans[id]=+b.dataset.v;sfx.click();b.classList.add("sel");
-      setTimeout(()=>{if(r0!==run)return;i++;i<qs.length?ask():result()},180)});
+    const born=now();let lock=false;
+    app.querySelectorAll("[data-v]").forEach(b=>b.onclick=()=>{if(lock||now()-born<300)return;lock=true;ans[id]=+b.dataset.v;sfx.click();b.classList.add("sel");
+      later(()=>{i++;i<qs.length?ask():result()},180)});
     if(i)$("#pb").onclick=()=>{i--;ask()}}
   function result(){
     const QT2=I18N.raw("Q"),LD=I18N.raw("L"),DESC=I18N.raw("D");
@@ -789,121 +1034,116 @@ function mbRun(done){
       <h3>${t("rp_str")}</h3><ul>${Ls.map(l=>`<li>${l[2]}</li>`).join("")}</ul>
       <h3>${t("rp_bl")}</h3><ul>${Ls.map(l=>`<li>${l[3]}</li>`).join("")}</ul>
       <h3>${t("rp_gr")}</h3><ul>${Ls.map(l=>`<li>${l[4]}</li>`).join("")}</ul></div>`;
-    award("mb",20);store.set("oracle-mb",{type,date:new Date().toISOString().slice(0,10)});
+    const sm=Profile.record({id:runId,g:"mb",key:"",score:0,min:false,unit:"",d:{type}});
     go("res");sfx.done();
     show(`${prog(1,1)}<h2>${t("rp_h")}</h2><div class="big">${type}</div><p class="fb" style="text-align:center">${DESC[type]}</p>
      ${radar}<h3>${t("rp_dims")}</h3>${axes}${rep}
-     <div class="warn">${t("rp_warn")}</div><button class="cta" id="nx">${t("tomenu")}</button>`);
+     ${rewardsHtml(sm)}<div class="warn">${t("rp_warn")}</div><button class="cta" id="nx">${t("tomenu")}</button>`);
     requestAnimationFrame(()=>requestAnimationFrame(()=>{const rp=$("#rp");if(rp)rp.style.transform="scale(1)";app.querySelectorAll("[data-w]").forEach(e=>e.style.width=e.dataset.w+"%")}));
-    burst($(".big"),"#b46bff");$("#nx").onclick=done}
+    celebrate(sm,t("rp_h")+" "+type);burst($(".big"),"#b46bff");$("#nx").onclick=done}
   ask()}
 
 /* ===================== game 3: memory match ===================== */
 function memPlay(n){
-  RR=null;go("mb",true);
+  RR=null;go("mb",true);const id=newRun();
   const key=n===6?"mem-easy":"mem-hard",syms=shuffle(["🌙","⭐","🔮","🪐","☄️","🌌","🧿","🦉"]).slice(0,n),cards=shuffle([...syms,...syms]);
   let moves=0,found=0,open=[],lock=false;
-  show(`${gameHead("mem",`<span id="mv">${t("moves")}: 0</span>`)}<div class="mem">${cards.map((s,i)=>`<button class="mc" data-i="${i}" aria-label="${t("card",i+1)}"><i class="bk">❔</i><i class="fr">${s}</i></button>`).join("")}</div>`,true);
-  exitBtn();const r0=run,bs=[...app.querySelectorAll(".mc")];
+  show(`${gameHead("mem",`<span id="mv" class="ltr">${t("moves")}: 0</span>`)}<p class="hintline">${t("gi_mem")}</p><div class="mem">${cards.map((s,i)=>`<button class="mc" data-i="${i}" aria-label="${t("card",i+1)}"><i class="bk">❔</i><i class="fr">${s}</i></button>`).join("")}</div>`,true);
+  exitBtn();const bs=[...app.querySelectorAll(".mc")];
   bs.forEach(b=>b.onclick=()=>{
     const i=+b.dataset.i;if(lock||b.classList.contains("up"))return;
     b.classList.add("up");b.setAttribute("aria-label",cards[i]);sfx.click();open.push(i);
     if(open.length<2)return;
     moves++;$("#mv").textContent=t("moves")+": "+moves;const[a,c]=open;open=[];
-    if(cards[a]===cards[c]){[a,c].forEach(k=>bs[k].classList.add("ok"));sfx.ok();burst(bs[c],"#5df2d6");
-      if(++found===n)finish(key,moves,true,"u_moves",t("mem_done",moves),()=>memPlay(n))}
-    else{lock=true;sfx.no();setTimeout(()=>{if(r0!==run)return;[a,c].forEach(k=>{bs[k].classList.remove("up");bs[k].setAttribute("aria-label",t("card",k+1))});lock=false},800)}})}
+    if(cards[a]===cards[c]){[a,c].forEach(k=>bs[k].classList.add("ok"));sfx.ok();burst(bs[c],"#5df2d6");announce(t("ann_pair"));
+      if(++found===n)finish({id,g:"mem",key,score:moves,min:true,unit:"u_moves",d:{moves,pairs:n},msg:t("mem_done",nf(moves)),again:()=>memPlay(n)})}
+    else{lock=true;sfx.no();later(()=>{[a,c].forEach(k=>{bs[k].classList.remove("up");bs[k].setAttribute("aria-label",t("card",k+1))});lock=false},800)}})}
 
 /* ===================== game 4: pattern echo ===================== */
 function echoPlay(){
-  RR=null;go("mb",true);
-  const cols=["#5df2d6","#b46bff","#ffc86b","#ff6b9d"],fr=[262,330,392,523],seq=[];let pos=0,accept=false;
-  show(`${gameHead("echo",`<span id="rd"></span>`)}<p class="q" id="stt"></p><div class="pads">${cols.map((c,i)=>`<button class="pad" data-kbd="${i+1}" aria-label="${i+1}" style="--p:${c}"></button>`).join("")}</div>`,true);
+  RR=null;go("mb",true);const id=newRun();
+  const cols=["#5df2d6","#b46bff","#ffc86b","#ff6b9d"],fr=[262,330,392,523],seq=[];let pos=0,accept=false,ended=false;
+  show(`${gameHead("echo",`<span id="rd" class="ltr"></span>`)}<p class="hintline">${t("gi_echo")}</p><p class="q" id="stt" role="status"></p><div class="pads">${cols.map((c,i)=>`<button class="pad" data-kbd="${i+1}" aria-label="${i+1}" style="--p:${c}"></button>`).join("")}</div>`,true);
   exitBtn();
-  const r0=run,alive=()=>r0===run,pads=[...app.querySelectorAll(".pad")],wait=ms=>new Promise(r=>setTimeout(r,ms)),say=s=>{$("#stt").textContent=s};
-  const flash=i=>{pads[i].classList.add("lit");tone(fr[i],.3,"sine",1.2);setTimeout(()=>pads[i].classList.remove("lit"),320)};
+  const pads=[...app.querySelectorAll(".pad")],wait=ms=>new Promise(r=>later(r,ms)),say=s=>{$("#stt").textContent=s};
+  const flash=i=>{pads[i].classList.add("lit");tone(fr[i],.3,"sine",1.2);later(()=>pads[i].classList.remove("lit"),320)};
   const round=async()=>{
     accept=false;seq.push(Math.floor(Math.random()*4));$("#rd").textContent=t("echo_round",seq.length);say(t("echo_watch"));await wait(700);
-    for(const i of seq){if(!alive())return;flash(i);await wait(Math.max(360,600-seq.length*20))}
-    if(alive()){accept=true;pos=0;say(t("echo_you"))}};
+    for(const i of seq){flash(i);await wait(600)}
+    accept=true;pos=0;say(t("echo_you"))};
   pads.forEach((p,i)=>p.onclick=()=>{
-    if(!accept)return;flash(i);
-    if(i!==seq[pos]){accept=false;sfx.no();const d=seq.length-1;say("");finish("echo",d,false,"u_rounds",t("echo_over",d),echoPlay);return}
-    if(++pos===seq.length){accept=false;sfx.ok();setTimeout(()=>{if(alive())round()},800)}});
+    if(!accept||ended)return;flash(i);
+    if(i!==seq[pos]){accept=false;ended=true;sfx.no();const d=seq.length-1;say("");
+      finish({id,g:"echo",key:"echo",score:d,min:false,unit:"u_rounds",d:{rounds:d},msg:t("echo_over",nf(d)),again:echoPlay,skip:d<1});return}
+    if(++pos===seq.length){accept=false;sfx.ok();later(round,800)}});
   round()}
 
 /* ===================== game 5: sliding tiles ===================== */
 function slidePlay(n){
-  RR=null;go("mb",true);
-  const N=n*n,key="slide-"+n;
-  const nbs=i=>{const r=Math.floor(i/n),c=i%n,a=[];if(r>0)a.push(i-n);if(r<n-1)a.push(i+n);if(c>0)a.push(i-1);if(c<n-1)a.push(i+1);return a};
-  const solved=b=>b.every((v,i)=>v===(i+1)%N);
-  let b,blank,moves=0,done=false;
-  do{b=[...Array(N).keys()].map(i=>(i+1)%N);blank=N-1;let prev=-1; /* shuffle by legal moves so the puzzle is always solvable */
-    for(let k=0;k<N*30;k++){const c=nbs(blank).filter(x=>x!==prev),m=c[Math.floor(Math.random()*c.length)];[b[blank],b[m]]=[b[m],b[blank]];prev=blank;blank=m}}while(solved(b));
-  show(`${gameHead("slide",`<span id="mv"></span>`)}<div class="tiles" id="tl" style="grid-template-columns:repeat(${n},1fr)"></div><button class="ghost" id="sh" style="display:block;margin:0 auto">${t("shuffle")}</button>`,true);
-  exitBtn();const r0=run;
+  RR=null;go("mb",true);const id=newRun();
+  const key="slide-"+n,b=OracleLogic.slideBoard(n);let blank=b.indexOf(0),moves=0,done=false;
+  show(`${gameHead("slide",`<span id="mv" class="ltr"></span>`)}<p class="hintline">${t("gi_slide")}</p><div class="tiles" id="tl" style="grid-template-columns:repeat(${n},1fr)"></div><button class="ghost" id="sh" style="display:block;margin:0 auto">${t("shuffle")}</button>`,true);
+  exitBtn();
   const draw=()=>{$("#mv").textContent=t("moves")+": "+moves;
     $("#tl").innerHTML=b.map((v,i)=>`<button class="tile ltr${v?"":" blank"}" data-i="${i}" ${v?"":'disabled aria-hidden="true"'}>${v||""}</button>`).join("");
     $("#tl").querySelectorAll(".tile").forEach(x=>x.onclick=()=>move(+x.dataset.i))};
-  const move=i=>{if(done||!nbs(blank).includes(i))return;[b[blank],b[i]]=[b[i],b[blank]];blank=i;moves++;sfx.click();draw();
-    if(solved(b)){done=true;finish(key,moves,true,"u_moves",t("slide_win",moves),()=>slidePlay(n))}};
+  const move=i=>{if(done||!OracleLogic.slideNbs(blank,n).includes(i))return;[b[blank],b[i]]=[b[i],b[blank]];blank=i;moves++;sfx.click();draw();
+    if(OracleLogic.slideSolved(b)){done=true;finish({id,g:"slide",key,score:moves,min:true,unit:"u_moves",d:{n,moves},msg:t("slide_win",nf(moves)),again:()=>slidePlay(n)})}};
   $("#sh").onclick=()=>slidePlay(n);
-  const kh=e=>{if(r0!==run){removeEventListener("keydown",kh);return}
+  const kh=e=>{if(e.ctrlKey||e.metaKey||e.altKey||paused())return;
     const m={ArrowUp:blank+n,ArrowDown:blank-n,ArrowLeft:blank+1,ArrowRight:blank-1}[e.key];
-    if(m!==undefined&&nbs(blank).includes(m)){e.preventDefault();move(m)}};
-  addEventListener("keydown",kh);draw()}
+    if(m!==undefined&&OracleLogic.slideNbs(blank,n).includes(m)){e.preventDefault();move(m)}};
+  addEventListener("keydown",kh);onLeave(()=>removeEventListener("keydown",kh));draw()}
 
 /* ===================== game 6: math sprint ===================== */
 function mathPlay(){
-  RR=null;go("iq",true);
-  const TOTAL=45,ri=(a,b)=>a+Math.floor(Math.random()*(b-a+1));let left=TOTAL,ok=0,over=false,ans=0;
-  show(`${gameHead("math",`<span id="mv"></span>`)}<div class="tb"><i id="tbi"></i></div><p class="big ltr" id="mq" style="font-size:2.4rem"></p><div class="grid" id="mo" style="grid-template-columns:repeat(2,1fr)"></div>`,true);
+  RR=null;go("iq",true);const id=newRun();
+  const TOTAL=45000;let left=TOTAL,last=now(),ok=0,over=false,ans=0;
+  show(`${gameHead("math",`<span id="mv" class="ltr"></span>`)}<p class="hintline">${t("gi_math")}</p><div class="tb"><i id="tbi"></i></div><p class="big ltr" id="mq" style="font-size:2.4rem"></p><div class="grid" id="mo" style="grid-template-columns:repeat(2,1fr)"></div>`,true);
   exitBtn();
-  const next=()=>{
-    const lv=1+Math.floor(ok/4),op=["+","−","×"][ri(0,lv>1?2:1)];let a,b,r;
-    if(op==="+"){a=ri(2,9*lv+5);b=ri(2,9*lv+5);r=a+b}else if(op==="−"){a=ri(5,9*lv+10);b=ri(1,a-1);r=a-b}else{a=ri(2,6+lv);b=ri(2,6+lv);r=a*b}
-    const s=new Set([r]);while(s.size<4){const w=r+ri(1,Math.max(3,Math.round(r*.2)))*(Math.random()<.5?-1:1);if(w>=0)s.add(w)}
-    ans=r;$("#mq").textContent=`${a} ${op} ${b}`;$("#mv").textContent=t("math_ok",ok);
-    $("#mo").innerHTML=shuffle([...s]).map(v=>`<button class="opt ltr" data-n="${v}">${v}</button>`).join("");
-    $("#mo").querySelectorAll(".opt").forEach(x=>x.onclick=()=>{if(over)return;if(+x.dataset.n===ans){ok++;sfx.ok()}else{left-=3;sfx.no()}next()})};
+  const next=()=>{const q=OracleLogic.makeMath(1+Math.floor(ok/4));ans=q.ans;
+    $("#mq").textContent=`${q.a} ${q.op} ${q.b}`;$("#mv").textContent=t("math_ok",nf(ok));
+    $("#mo").innerHTML=shuffle(q.opts).map(v=>`<button class="opt ltr" data-n="${v}">${v}</button>`).join("");
+    $("#mo").querySelectorAll(".opt").forEach(x=>x.onclick=()=>{if(over)return;if(+x.dataset.n===ans){ok++;sfx.ok()}else{left-=3000;sfx.no()}next()})};
+  const end=()=>{if(over)return;over=true;clearInterval(tm);$("#mo").innerHTML="";$("#mv").textContent=t("math_ok",nf(ok));
+    finish({id,g:"math",key:"math",score:ok,min:false,unit:"u_ok",d:{ok},msg:t("math_done",nf(ok)),again:mathPlay})};
   next();
-  tm=setInterval(()=>{if(paused())return;left-=.1;$("#tbi").style.width=Math.max(left/TOTAL,0)*100+"%";
-    if(left<=0){clearInterval(tm);over=true;$("#mo").innerHTML="";$("#mv").textContent=t("math_ok",ok);finish("math",ok,false,"u_ok",t("math_done",ok),mathPlay)}},100)}
+  tm=setInterval(()=>{const n=now(),dt=n-last;last=n;if(paused())return;left-=dt;   /* wall-clock based, so it cannot drift and pauses while dialogs are open */
+    $("#tbi").style.width=Math.max(left/TOTAL,0)*100+"%";if(left<=0)end()},100)}
 
 /* ===================== game 7: lights out ===================== */
 function lightsPlay(){
-  RR=null;go("menu",true);
-  const N=5,g=Array(25).fill(0);let moves=0,over=false;
-  const press=i=>{const r=Math.floor(i/N),c=i%N;[[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dr,dc])=>{const rr=r+dr,cc=c+dc;if(rr>=0&&rr<N&&cc>=0&&cc<N)g[rr*N+cc]^=1})};
-  do{g.fill(0);for(let k=0;k<12;k++)press(Math.floor(Math.random()*25))}while(g.every(x=>!x)); /* built from real presses, so always solvable */
-  show(`${gameHead("lights",`<span id="mv"></span>`)}<p class="fb" style="text-align:center">${t("lights_goal")}</p><div class="lights" id="lg"></div><button class="ghost" id="nw" style="display:block;margin:0 auto">${t("lights_new")}</button>`,true);
+  RR=null;go("menu",true);const id=newRun();
+  const N=5,g=OracleLogic.lightsPuzzle();let moves=0,over=false;
+  show(`${gameHead("lights",`<span id="mv" class="ltr"></span>`)}<p class="hintline">${t("lights_goal")}</p><div class="lights" id="lg"></div><button class="ghost" id="nw" style="display:block;margin:0 auto">${t("lights_new")}</button>`,true);
   exitBtn();
   const draw=()=>{$("#mv").textContent=t("moves")+": "+moves;
     $("#lg").innerHTML=g.map((v,i)=>`<button class="lt${v?" on":""}" data-i="${i}" aria-pressed="${!!v}" aria-label="${Math.floor(i/N)+1},${i%N+1}"></button>`).join("");
-    $("#lg").querySelectorAll(".lt").forEach(b=>b.onclick=()=>{if(over)return;press(+b.dataset.i);moves++;sfx.click();draw();
-      if(g.every(x=>!x)){over=true;finish("lights",moves,true,"u_moves",t("lights_win",moves),lightsPlay)}})};
+    $("#lg").querySelectorAll(".lt").forEach(b=>b.onclick=()=>{if(over)return;OracleLogic.lightsPress(g,+b.dataset.i);moves++;sfx.click();draw();
+      if(g.every(x=>!x)){over=true;finish({id,g:"lights",key:"lights",score:moves,min:true,unit:"u_moves",d:{moves},msg:t("lights_win",nf(moves)),again:lightsPlay})}})};
   $("#nw").onclick=lightsPlay;draw()}
 
 /* ===================== game 8: reaction test ===================== */
 function reactPlay(){
-  RR=null;go("menu",true);
-  let round=0,state="idle",t0=0,to=0;const res=[];
-  show(`${gameHead("react")}<p class="q" id="rq">${t("react_round",1)}</p><button class="react" id="rb">${t("react_tap")}</button>`,true);
-  exitBtn();const r0=run,rb=$("#rb");
+  RR=null;go("menu",true);const id=newRun();
+  let round=0,state="idle",t0=0;const res=[];
+  show(`${gameHead("react")}<p class="hintline">${t("react_intro")}</p><p class="q" id="rq">${t("react_round",1)}</p><button class="react" id="rb">${t("react_tap")}</button>`,true);
+  exitBtn();const rb=$("#rb");
   const setS=(cls,txt)=>{rb.className="react "+cls;rb.textContent=txt};
-  const arm=()=>{state="wait";setS("wait",t("react_wait"));to=setTimeout(()=>{if(r0!==run)return;state="go";setS("go",t("react_go"));t0=performance.now()},1500+Math.random()*2500)};
-  const hit=()=>{
-    if(state==="idle")arm();
-    else if(state==="wait"){clearTimeout(to);state="idle";setS("wait",t("react_early"));sfx.no()}
-    else if(state==="go"){const ms=Math.round(performance.now()-t0);res.push(ms);round++;sfx.click();
-      if(round===5){const avg=Math.round(res.reduce((a,b)=>a+b,0)/5);state="done";rb.disabled=true;finish("react",avg,true,"u_ms",t("react_done",avg),reactPlay)}
-      else{state="idle";setS("",t("react_ms",ms));$("#rq").textContent=t("react_round",round+1)}}}
-  rb.onpointerdown=e=>{e.preventDefault();hit()};rb.onkeydown=e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();hit()}}}
+  const arm=delay=>{state="wait";setS("wait",t("react_wait"));
+    later(()=>{if(paused()){arm(800);return}state="go";setS("go",t("react_go"));announce(t("react_go"));t0=now()},delay)};   /* never goes green behind a dialog */
+  rb.onclick=()=>{
+    if(state==="idle")arm(1500+Math.random()*2500);
+    else if(state==="wait"){TMO.forEach(clearTimeout);TMO.clear();state="idle";setS("wait",t("react_early"));sfx.no()}
+    else if(state==="go"){const ms=Math.round(now()-t0);res.push(ms);round++;sfx.click();
+      if(round===5){const st=OracleLogic.reactStats(res);state="done";rb.disabled=true;
+        finish({id,g:"react",key:"react",score:st.avg,min:true,unit:"u_ms",d:{avg:st.avg},msg:t("react_done",nf(st.avg)),again:reactPlay,
+          extra:`<p class="ltr">${t("react_list",res.join(" · "))}</p><p class="ltr">${t("react_best",nf(st.best))}</p>`})}
+      else{state="idle";setS("",t("react_ms",nf(ms)));$("#rq").textContent=t("react_round",round+1)}}}}
 
 /* ===================== boot ===================== */
 function boot(){
-  try{BANK=PuzzleEngine.buildBanks(2026);if(BANK.length!==4||BANK.some(b=>b.length<10))throw new Error(t("err_bank"));welcome()}
+  try{Profile.load();BANK=PuzzleEngine.buildBanks(2026);if(BANK.length!==4||BANK.some(b=>b.length<10))throw new Error(t("err_bank"));welcome()}
   catch(err){fatal(err.message)}}
 (()=>{const saved=store.get("oracle-lang",null),nav=(navigator.language||"en").slice(0,2);
   I18N.set(LANGS.includes(saved)?saved:LANGS.includes(nav)?nav:"en");applyLang()})();
